@@ -1,0 +1,2076 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>NAVICORE — Logistics Intelligence Platform</title>
+<meta name="description" content="Plataforma de inteligencia logistica para operadores maritimos, terrestres y aereos en Latinoamerica. Dashboard ejecutivo, trazabilidad en tiempo real y analisis AI."/>
+<meta name="author" content="Johann Rodo — NAVICORE"/>
+
+<!-- Open Graph (LinkedIn, WhatsApp, Slack preview) -->
+<meta property="og:title" content="NAVICORE — Logistics Intelligence Platform"/>
+<meta property="og:description" content="Demo en vivo: trazabilidad multimodal, analytics AI y compliance para operadores logisticos LATAM."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://navicore.netlify.app"/>
+<meta property="og:image" content="https://navicore.netlify.app/og-preview.png"/>
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="NAVICORE — Logistics Intelligence Platform"/>
+<meta name="twitter:description" content="Demo en vivo: dashboard ejecutivo, AI logistico y trazabilidad multimodal para LATAM."/>
+
+<!-- Mobile -->
+<meta name="theme-color" content="#00C2CC"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%2300C2CC'/><text y='.9em' font-size='80' x='10'>⚓</text></svg>"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#08111F;--navy2:#0F1E30;--navy3:#172840;
+  --cyan:#00C2CC;--cyan2:#00E5F0;
+  --cdim:rgba(0,194,204,0.12);--cdim2:rgba(0,194,204,0.06);
+  --slate:#3A6B8A;--slate2:#4D85A8;
+  --white:#F0F5FA;--white2:#D8E4EF;--muted:#6B8299;--muted2:#4A6070;
+  --danger:#E05555;--ddim:rgba(224,85,85,0.12);
+  --success:#2EC97E;--sdim:rgba(46,201,126,0.12);
+  --warn:#E08A30;--wdim:rgba(224,138,48,0.12);
+  --purple:#7C5CBF;
+  --b1:rgba(0,194,204,0.1);--b2:rgba(107,130,153,0.15);
+}
+html,body{height:100%;background:#08111F;font-family:'DM Sans',sans-serif;color:#F0F5FA;overflow:hidden}
+#app{display:flex;height:100vh;position:relative;background:#08111F}
+#sb{width:214px;background:var(--navy2);border-right:1px solid var(--b1);display:flex;flex-direction:column;flex-shrink:0}
+.sb-brand{display:flex;align-items:center;gap:9px;padding:14px 16px 12px;border-bottom:1px solid var(--b1)}
+.sb-logo{width:28px;height:28px;background:var(--cyan);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--navy);flex-shrink:0}
+.sb-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px}
+.sb-section{padding:10px 16px 4px;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted2)}
+.nav-item{display:flex;align-items:center;gap:9px;padding:7px 16px;font-size:11.5px;color:var(--muted);cursor:pointer;border-left:2px solid transparent;transition:all .12s;user-select:none;border-radius:0 6px 6px 0}
+.nav-item:hover{color:var(--white2);background:rgba(0,194,204,0.04);padding-left:20px}
+.nav-item.active{color:var(--cyan);border-left-color:var(--cyan);background:var(--cdim2);padding-left:20px}
+.nav-badge{width:6px;height:6px;background:var(--danger);border-radius:50%;margin-left:auto;flex-shrink:0;animation:pulse 2s infinite}
+.sb-user{margin-top:auto;padding:10px 14px;border-top:1px solid var(--b1);display:flex;align-items:center;gap:8px}
+.user-av{width:30px;height:30px;border-radius:50%;background:var(--slate);border:1.5px solid rgba(0,194,204,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.user-name{font-size:11.5px;font-weight:500}.user-role{font-size:9px;color:var(--cyan);letter-spacing:1px;text-transform:uppercase}
+.notif-bell{background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;padding:4px;position:relative}
+.notif-bell:hover{color:var(--white)}
+.notif-dot{position:absolute;top:0;right:0;width:8px;height:8px;background:var(--danger);border-radius:50%;border:1.5px solid var(--navy2);display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;font-weight:700}
+.btn-logout{margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:4px;transition:color .15s}
+.btn-logout:hover{color:var(--danger)}
+#main{flex:1;overflow-y:auto;padding:18px 20px 24px;background:var(--navy);min-height:0;scroll-behavior:smooth}
+#main::-webkit-scrollbar{width:3px}
+#main::-webkit-scrollbar-thumb{background:rgba(0,194,204,0.2);border-radius:2px}
+#login-screen{position:absolute;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:100}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,194,204,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,194,204,0.04) 1px,transparent 1px);background-size:44px 44px;pointer-events:none}
+.bg-glow{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(0,194,204,0.07) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.login-card{background:var(--navy2);border:1px solid rgba(0,194,204,0.2);border-radius:18px;padding:2.5rem 2rem;width:390px;position:relative;z-index:1}
+.brand-big{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:5px;display:flex;align-items:center;gap:12px;margin-bottom:4px}
+.logo-big{width:40px;height:40px;background:var(--cyan);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--navy)}
+.f-label{display:block;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.f-input{width:100%;background:var(--navy);border:1px solid rgba(107,130,153,0.2);border-radius:8px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--white);outline:none;transition:border-color .2s;margin-bottom:12px}
+.f-input:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,194,204,0.15)}
+.btn-enter{width:100%;background:var(--cyan);color:var(--navy);border:none;border-radius:9px;padding:11px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:1.5px;text-transform:uppercase;transition:all .15s}
+.btn-enter:hover{background:var(--cyan2)}.btn-enter:active{transform:scale(0.98)}.btn-enter:disabled{opacity:.6;cursor:not-allowed}
+.demo-pills{margin-top:16px;padding-top:14px;border-top:1px solid rgba(107,130,153,0.12)}
+.demo-pill-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.demo-pill{display:flex;align-items:center;gap:8px;width:100%;background:rgba(0,194,204,0.05);border:1px solid rgba(0,194,204,0.12);border-radius:7px;padding:7px 10px;color:var(--white2);font-size:11px;cursor:pointer;margin-bottom:5px;font-family:'DM Sans',sans-serif;text-align:left;transition:background .2s}
+.demo-pill:hover{background:rgba(0,194,204,0.1)}.demo-pill:active{transform:scale(0.99)}
+.role-chip{font-size:9px;background:rgba(0,194,204,0.15);color:var(--cyan);padding:2px 7px;border-radius:4px;letter-spacing:1px;text-transform:uppercase;margin-left:auto;flex-shrink:0}
+.err-msg{color:var(--danger);font-size:11.5px;margin-top:6px;display:none;padding:6px 10px;background:rgba(224,85,85,0.08);border-radius:6px;border-left:2px solid var(--danger)}
+.card{background:var(--navy2);border:1px solid var(--b2);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.card-title{font-size:11.5px;font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:6px;color:var(--white)}
+.page-hdr{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px}
+.page-sub{font-size:10.5px;color:var(--muted);margin-top:1px}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:12px}
+.kpi{background:var(--navy2);border:1px solid var(--b2);border-radius:10px;padding:12px 14px;position:relative;overflow:hidden;transition:transform .15s;cursor:default}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.kpi:hover{transform:translateY(-2px)}
+.kpi.c::before{background:var(--cyan)}.kpi.g::before{background:var(--success)}.kpi.w::before{background:var(--warn)}.kpi.r::before{background:var(--danger)}
+.kpi-lbl{font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.kpi-val{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;line-height:1}
+.kpi-delta{font-size:9.5px;margin-top:3px}
+.up{color:var(--success)}.dn{color:var(--danger)}.nt{color:var(--muted)}
+.bdg{padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;display:inline-block}
+.b-ok{background:var(--sdim);color:var(--success)}.b-dl{background:var(--ddim);color:var(--danger)}
+.b-tr{background:var(--cdim);color:var(--cyan)}.b-pd{background:var(--wdim);color:var(--warn)}
+.b-sea{background:rgba(58,107,138,0.22);color:#7BBDE0}.b-land{background:var(--sdim);color:var(--success)}.b-air{background:var(--cdim);color:var(--cyan)}
+.b-exec{background:rgba(201,168,76,0.15);color:#E8C97A}.b-ana{background:var(--cdim);color:var(--cyan)}.b-cli{background:rgba(58,107,138,0.2);color:#7BBDE0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px}
+.tbl th{text-align:left;padding:6px 9px;color:var(--muted);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid var(--b2);font-weight:500}
+.tbl td{padding:7px 9px;color:var(--white2);border-bottom:1px solid rgba(107,130,153,0.07)}
+.tbl tr{transition:background .1s}.tbl tr:hover td{background:var(--cdim2)}.tbl tr:last-child td{border-bottom:none}
+.alert-row{display:flex;gap:9px;padding:9px 10px;border-radius:8px;margin-bottom:6px;border-left:2px solid}
+.a-crit{background:var(--ddim);border-color:var(--danger)}.a-warn{background:var(--wdim);border-color:var(--warn)}.a-ok{background:var(--sdim);border-color:var(--success)}.a-info{background:var(--cdim);border-color:var(--cyan)}
+.a-t{font-size:11px;font-weight:600;color:var(--white)}.a-b{font-size:10px;color:var(--muted);margin-top:2px}.a-tm{font-size:9px;color:var(--muted2);margin-top:3px}
+.track-card{background:var(--navy2);border:1px solid var(--b2);border-radius:10px;padding:14px 16px;margin-bottom:9px;transition:border-color .15s,transform .15s}
+.track-card:hover{border-color:rgba(0,194,204,0.2);transform:translateX(2px)}
+.mb-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.mb-lbl{font-size:10px;color:var(--muted);width:74px;flex-shrink:0}
+.mb-track{flex:1;height:5px;background:rgba(107,130,153,0.1);border-radius:3px;overflow:hidden}
+.mb-fill{height:100%;border-radius:3px}
+.mb-val{font-size:10px;font-weight:500;width:36px;text-align:right}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.chart-full{grid-column:1/-1}
+.mtabs{display:flex;gap:3px;background:var(--navy2);border-radius:8px;padding:3px}
+.mtab{padding:4px 10px;font-size:10.5px;font-weight:500;border-radius:5px;cursor:pointer;color:var(--muted);border:none;background:none;font-family:'DM Sans',sans-serif;transition:all .12s;display:flex;align-items:center;gap:4px}
+.mtab.active{background:var(--cyan);color:var(--navy)}.mtab:hover:not(.active){color:var(--white)}
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.comp-card{background:var(--navy);border:1px solid var(--b2);border-radius:8px;padding:9px 11px}
+.comp-dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:5px}
+.ai-msgs{height:230px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px 2px;margin-bottom:10px}
+.ai-msg-user{align-self:flex-end;background:var(--cdim);border:1px solid rgba(0,194,204,0.2);color:var(--white);padding:8px 11px;border-radius:10px 10px 2px 10px;font-size:11.5px;max-width:80%;line-height:1.5}
+.ai-msg-bot{align-self:flex-start;background:rgba(124,92,191,0.1);border:1px solid rgba(124,92,191,0.18);color:var(--white2);padding:8px 11px;border-radius:10px 10px 10px 2px;font-size:11.5px;max-width:85%;line-height:1.55}
+.ai-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.ai-chip{background:rgba(124,92,191,0.1);border:1px solid rgba(124,92,191,0.2);border-radius:7px;padding:4px 9px;font-size:10px;color:#A89DD8;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s}
+.ai-chip:hover{background:rgba(124,92,191,0.2)}.ai-chip:active{transform:scale(0.97)}
+.ai-input-bar{display:flex;gap:7px}
+.ai-input{flex:1;background:var(--navy);border:1px solid var(--b2);border-radius:8px;padding:8px 11px;color:var(--white);font-size:12px;font-family:'DM Sans',sans-serif;outline:none;resize:none}
+.ai-input:focus{border-color:rgba(124,92,191,0.5)}
+.ai-send{background:var(--purple);color:#fff;border:none;border-radius:8px;padding:8px 13px;font-size:13px;cursor:pointer;transition:background .15s}
+.ai-send:hover{background:#9370DB}.ai-send:disabled{opacity:.4;cursor:not-allowed}
+.notif-panel{position:absolute;top:0;right:0;bottom:0;width:264px;background:var(--navy2);border-left:1px solid var(--b1);z-index:20;display:none;flex-direction:column}
+.notif-panel.open{display:flex;animation:slideIn .2s ease-out}
+.notif-hdr{padding:12px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
+.notif-list-wrap{flex:1;overflow-y:auto;padding:8px}
+.notif-item{padding:9px 10px;border-radius:8px;margin-bottom:5px;cursor:pointer;border-left:2px solid transparent;transition:background .12s}
+.notif-item.unread{background:var(--cdim2)}.notif-item:hover{background:rgba(0,194,204,0.04)}
+.notif-t{font-weight:600;color:var(--white);font-size:11px;margin-bottom:2px}
+.notif-b{font-size:10px;color:var(--muted);line-height:1.4}.notif-tm{font-size:9px;color:var(--muted2);margin-top:3px}
+.admin-tabs{display:flex;gap:2px;background:var(--navy2);border-radius:8px;padding:3px;width:fit-content;margin-bottom:12px}
+.adm-tab{padding:5px 14px;font-size:11px;font-weight:500;border-radius:6px;cursor:pointer;color:var(--muted);border:none;background:none;font-family:'DM Sans',sans-serif;transition:all .12s}
+.adm-tab.active{background:var(--cyan);color:var(--navy)}.adm-tab:hover:not(.active){color:var(--white)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.form-field label{display:block;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.form-field input,.form-field select{width:100%;background:var(--navy);border:1px solid var(--b2);border-radius:7px;padding:7px 9px;color:var(--white);font-size:11.5px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s}
+.form-field input:focus,.form-field select:focus{border-color:var(--cyan)}
+.btn{padding:6px 13px;border-radius:7px;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:5px;border:none;transition:all .15s}
+.btn:active{transform:scale(0.97)}.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-primary{background:var(--cyan);color:var(--navy)}.btn-primary:hover{background:var(--cyan2)}
+.btn-ghost{background:rgba(0,194,204,0.08);color:var(--cyan);border:1px solid rgba(0,194,204,0.2)}.btn-ghost:hover{background:rgba(0,194,204,0.15)}
+.btn-sm{padding:3px 9px;font-size:10px}.btn-danger{background:var(--ddim);color:var(--danger)}
+.exp-bar{display:flex;align-items:center;gap:6px;padding:7px 10px;background:var(--navy3);border-radius:8px;border:1px solid var(--b2);margin-bottom:10px}
+.exp-btn{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:5px;font-size:10px;font-weight:500;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .15s}
+.exp-btn:hover{transform:translateY(-1px);filter:brightness(1.1)}.exp-btn:active{transform:translateY(0)}
+.e-pdf{background:var(--ddim);color:#F08080}.e-xl{background:var(--sdim);color:var(--success)}.e-csv{background:rgba(107,130,153,0.15);color:var(--muted)}
+.stat-row{display:flex;gap:9px;margin-bottom:10px}
+.stat-item{flex:1;background:var(--navy3);border-radius:8px;padding:10px;text-align:center}
+.stat-n{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--cyan)}.stat-l{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:1px}
+.scroll-wrap{max-height:250px;overflow-y:auto}
+*{scrollbar-width:thin;scrollbar-color:rgba(0,194,204,0.2) transparent}
+.doc-card{background:var(--navy2);border:1px solid rgba(107,130,153,0.15);border-radius:10px;padding:12px 14px;cursor:default;transition:border-color .15s}
+.doc-card:hover{border-color:rgba(0,194,204,0.25)}
+.empty-state{text-align:center;padding:36px;color:var(--muted)}
+.empty-state i{font-size:32px;display:block;margin-bottom:10px;opacity:.3}
+.empty-state p{font-size:12px}
+.toast{position:fixed;bottom:14px;right:14px;background:var(--navy2);border:1px solid var(--cyan);border-radius:10px;padding:9px 14px;font-size:11.5px;color:var(--cyan);display:flex;align-items:center;gap:7px;z-index:9999;opacity:0;transform:translateY(20px);transition:all .25s;pointer-events:none;max-width:300px}
+.toast.show{opacity:1;transform:translateY(0)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+#main > *{animation:fadeIn .18s ease-out}
+.ldots::after{content:'...';animation:ldot 1.2s steps(4,end) infinite}
+@keyframes ldot{0%,20%{content:''}40%{content:'.'}60%{content:'..'}80%,100%{content:'...'}}
+</style>
+</head>
+<body>
+<!--
+  ╔══════════════════════════════════════════════╗
+  ║  NAVICORE — Logistics Intelligence Platform  ║
+  ║  Fundador: Johann Rodo                       ║
+  ║  WhatsApp: +507 6865-2487                    ║
+  ║  Email: johann@navicore.io                   ║
+  ║  Demo: Ingresa con los accesos en pantalla   ║
+  ╚══════════════════════════════════════════════╝
+-->
+<noscript><div style="position:fixed;inset:0;background:#08111F;color:#F0F5FA;display:flex;align-items:center;justify-content:center;font-family:sans-serif;font-size:14px;text-align:center;z-index:9999"><div><div style="font-size:32px;margin-bottom:12px">⚠️</div>NAVICORE requiere JavaScript habilitado.<br><small style="color:#6B8299;margin-top:8px;display:block">Habilita JavaScript en tu navegador y recarga la pagina.</small></div></div></noscript>
+<div id="app">
+<div id="login-screen">
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+  <div class="login-card">
+    <div class="brand-big"><div class="logo-big">&#9875;</div>NAVICORE</div>
+    <div style="font-size:9.5px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:10px">Logistics Intelligence Platform</div>
+    <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(46,201,126,0.1);border:1px solid rgba(46,201,126,0.25);border-radius:6px;padding:4px 10px;font-size:9.5px;color:#2EC97E;margin-bottom:18px">
+      <span style="width:6px;height:6px;border-radius:50%;background:#2EC97E;animation:pulse 2s infinite;flex-shrink:0"></span>
+      DEMO EN VIVO &mdash; Ingresa con los accesos abajo
+    </div>
+    <label class="f-label">Correo electr&#243;nico</label>
+    <input class="f-input" id="li-email" type="email" placeholder="usuario@empresa.com" autocomplete="email"/>
+    <label class="f-label">Contrase&#241;a</label>
+    <input class="f-input" id="li-pass" type="password" placeholder="contrasena" autocomplete="current-password"/>
+    <div class="err-msg" id="li-err">Credenciales incorrectas</div>
+    <button class="btn-enter" id="btn-login">Ingresar al Portal</button>
+    <div class="demo-pills">
+      <div class="demo-pill-label">Accesos demo &#8212; click para ingresar &nbsp;&#183;&nbsp; <span style="color:var(--cyan)">NAVICORE</span> &middot; Johann Rod&#243;</div>
+      <button class="demo-pill" id="dp-exec"><i class="ti ti-user-circle"></i><span>ceo@navicore.io &#8212; Vista C-Level completa</span><span class="role-chip">C-Level</span></button>
+      <button class="demo-pill" id="dp-analyst"><i class="ti ti-chart-dots"></i><span>analyst@navicore.io &#8212; Vista operativa</span><span class="role-chip">Analista</span></button>
+      <button class="demo-pill" id="dp-client"><i class="ti ti-building"></i><span>client@translogsa.com &#8212; Portal cliente</span><span class="role-chip">Cliente</span></button>
+    </div>
+  </div>
+</div>
+<div id="sb">
+  <div class="sb-brand"><div class="sb-logo">&#9875;</div><span class="sb-name">NAVICORE</span></div>
+  <div id="nav-menu"></div>
+  <div class="sb-user">
+    <div class="user-av" id="u-av">--</div>
+    <div><div class="user-name" id="u-name">--</div><div class="user-role" id="u-role">--</div></div>
+    <button class="notif-bell" id="notif-btn" title="Notificaciones"><i class="ti ti-bell"></i><span class="notif-dot" id="notif-dot" style="display:none">0</span></button>
+    <button class="btn-logout" id="btn-logout" title="Cerrar sesi&#243;n"><i class="ti ti-logout"></i></button>
+  </div>
+</div>
+<div id="main"></div>
+<div class="notif-panel" id="notif-panel">
+  <div class="notif-hdr">
+    <div style="font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px"><i class="ti ti-bell"></i>Notificaciones</div>
+    <div style="display:flex;gap:5px">
+      <button class="btn btn-ghost btn-sm" id="mark-all-btn">Leer todo</button>
+      <button class="btn btn-ghost btn-sm" id="close-notif-btn"><i class="ti ti-x"></i></button>
+    </div>
+  </div>
+  <div class="notif-list-wrap" id="notif-list"></div>
+</div>
+</div>
+<div class="toast" id="toast"><i class="ti ti-circle-check"></i><span id="toast-msg"></span></div>
+<script>
+(function(){console.log('[NAVICORE] Script parsing OK');window.addEventListener('error',function(e){console.error('[NAVICORE ERROR]',e.message,'line',e.lineno);});})();
+
+
+var ACTIVE_PROFILE = 'generic'; // 'generic'|'naviera_colombia'|'carga_aerea_peru'|'logistica_terrestre_mx'
+
+var DEMO_PROFILES = {
+  generic: {
+    meta: { company:'NAVICORE Demo', sector:'Logistica Multimodal' },
+    users: [
+      { email:'ceo@navicore.io',       pass:'demo123',  role:'executive', name:'Carlos Montoya', init:'CM' },
+      { email:'analyst@navicore.io',   pass:'demo123',  role:'analyst',   name:'Ana Rios',       init:'AR' },
+      { email:'client@translogsa.com', pass:'demo123',  role:'client',    name:'Pedro Vargas',   init:'PV' }
+    ],
+    ships: [
+      { id:'NCM-2847', orig:'Cartagena, CO',    dest:'Rotterdam, NL',    mode:'sea',  prog:68, status:'transit', eta:'12 Jun', cargo:'Contenedores x24',     cost:45200, weight:'480 t',   client:'TransLog SA'     },
+      { id:'NCA-1193', orig:'Bogota, CO',       dest:'Miami, FL',        mode:'air',  prog:92, status:'ok',      eta:'4 Jun',  cargo:'Carga express 800kg',   cost:12800, weight:'800 kg',  client:'AeroCargo PE'    },
+      { id:'NCT-5521', orig:'Medellin, CO',     dest:'Buenaventura, CO', mode:'land', prog:45, status:'delay',   eta:'6 Jun',  cargo:'Carga general 20t',     cost:3400,  weight:'20 t',    client:'LogiAndes CO'    },
+      { id:'NCM-3012', orig:'Callao, PE',       dest:'Hamburg, DE',      mode:'sea',  prog:22, status:'transit', eta:'18 Jun', cargo:'Contenedores x12',      cost:28900, weight:'240 t',   client:'PacPort PE'      },
+      { id:'NCA-2204', orig:'Lima, PE',         dest:'Madrid, ES',       mode:'air',  prog:10, status:'pend',    eta:'7 Jun',  cargo:'Farmaceuticos 200kg',   cost:9100,  weight:'200 kg',  client:'MediCargo PE'    },
+      { id:'NCT-6688', orig:'Cali, CO',         dest:'Bogota, CO',       mode:'land', prog:99, status:'ok',      eta:'3 Jun',  cargo:'Electronicos 5t',       cost:1800,  weight:'5 t',     client:'TechoFreight CO' },
+      { id:'NCM-4401', orig:'Buenaventura, CO', dest:'Shanghai, CN',     mode:'sea',  prog:5,  status:'pend',    eta:'25 Jun', cargo:'Cafe 600t',             cost:62000, weight:'600 t',   client:'CafeExport CO'   },
+      { id:'NCA-3310', orig:'Bogota, CO',       dest:'Ciudad de Mexico', mode:'air',  prog:55, status:'transit', eta:'5 Jun',  cargo:'Flores 1200kg',         cost:8400,  weight:'1200 kg', client:'FloraAir CO'     }
+    ],
+    alerts: [
+      { id:1, lv:'crit', title:'Retraso critico NCT-5521',   body:'Bloqueo vial Medellin-Buenaventura. ETA +18h.', time:'Hace 35 min', read:false },
+      { id:2, lv:'warn', title:'Riesgo climatico Atlantico', body:'NCM-2847: condiciones adversas proyectadas.',   time:'Hace 2h',     read:false },
+      { id:3, lv:'warn', title:'Poliza proxima a vencer',    body:'NCA-2204 vence en 3 dias.',                    time:'Hace 4h',     read:false },
+      { id:4, lv:'ok',   title:'NCT-6688 entregado',         body:'Completado. Transito: 6.2h (meta 7h).',        time:'Hace 6h',     read:true  }
+    ],
+    compliance: [
+      { area:'Aduana Maritima',      status:'ok',   note:'34/34 docs vigentes'  },
+      { area:'Aduana Aerea',         status:'ok',   note:'21/21 docs vigentes'  },
+      { area:'Transporte Terrestre', status:'warn', note:'2 docs por vencer'    },
+      { area:'Seguro de Carga',      status:'warn', note:'Poliza vence 7 Jun'   },
+      { area:'DIAN / SAT',           status:'ok',   note:'Declaraciones al dia' },
+      { area:'IMO / IATA',           status:'ok',   note:'Vigentes'             },
+      { area:'ISPS Portuario',       status:'ok',   note:'Dic 2025'             },
+      { area:'Customs Brokerage',    status:'fail', note:'NCT-5521 pendiente'   }
+    ]
+  },
+  naviera_colombia: {
+    meta: { company:'NavCargo Colombia S.A.S.', sector:'Logistica Maritima' },
+    users: [
+      { email:'ceo@navcargo.co',    pass:'demo2025', role:'executive', name:'Andres Herrera',   init:'AH' },
+      { email:'ops@navcargo.co',    pass:'demo2025', role:'analyst',   name:'Monica Salcedo',   init:'MS' },
+      { email:'cliente@pco.co',     pass:'demo2025', role:'client',    name:'Ricardo Fontalvo', init:'RF' }
+    ],
+    ships: [
+      { id:'CTG-4821', orig:'Cartagena, CO',    dest:'Rotterdam, NL',  mode:'sea',  prog:72, status:'transit', eta:'15 Jun', cargo:'Contenedores 40ft x28', cost:52400,  weight:'560 t',   client:'Puerto Cartagena' },
+      { id:'CTG-4822', orig:'Barranquilla, CO', dest:'Hamburg, DE',    mode:'sea',  prog:35, status:'transit', eta:'22 Jun', cargo:'Carbon a granel',       cost:187000, weight:'8000 t',  client:'Puerto Cartagena' },
+      { id:'BUN-1103', orig:'Buenaventura, CO', dest:'Shanghai, CN',   mode:'sea',  prog:18, status:'pend',    eta:'30 Jun', cargo:'Cafe especial 1200t',   cost:94000,  weight:'1200 t',  client:'NavCargo CO'      },
+      { id:'BUN-1104', orig:'Buenaventura, CO', dest:'Yokohama, JP',   mode:'sea',  prog:88, status:'ok',      eta:'5 Jun',  cargo:'Aceite palma 500t',     cost:41000,  weight:'500 t',   client:'NavCargo CO'      },
+      { id:'CTG-4823', orig:'Cartagena, CO',    dest:'Miami, FL',      mode:'sea',  prog:55, status:'delay',   eta:'8 Jun',  cargo:'Petroquimicos',         cost:28000,  weight:'200 t',   client:'Puerto Cartagena' },
+      { id:'BOG-AIR1', orig:'Bogota, CO',       dest:'Madrid, ES',     mode:'air',  prog:95, status:'ok',      eta:'4 Jun',  cargo:'Flores 4000kg',         cost:18000,  weight:'4000 kg', client:'NavCargo CO'      },
+      { id:'MED-TRK1', orig:'Medellin, CO',     dest:'Cartagena, CO',  mode:'land', prog:60, status:'transit', eta:'6 Jun',  cargo:'Carga consolidada 30t', cost:4200,   weight:'30 t',    client:'NavCargo CO'      },
+      { id:'CTG-4824', orig:'Cartagena, CO',    dest:'Veracruz, MX',   mode:'sea',  prog:8,  status:'pend',    eta:'28 Jun', cargo:'Equipos industriales',  cost:67000,  weight:'350 t',   client:'Puerto Cartagena' }
+    ],
+    alerts: [
+      { id:1, lv:'crit', title:'CTG-4823 retenido Aduana',  body:'Petroquimicos en revision. Liberacion estimada 48h.', time:'Hace 1h', read:false },
+      { id:2, lv:'warn', title:'Certificado Fitosanitario', body:'BOG-AIR1: certificado vence 15 Jun.',                 time:'Hace 3h', read:false },
+      { id:3, lv:'warn', title:'Tormenta ruta Atlantico',   body:'CTG-4821 y CTG-4822 pueden afectarse.',              time:'Hace 5h', read:false },
+      { id:4, lv:'ok',   title:'BUN-1104 en Yokohama',      body:'Aceite de palma entregado. Transito 18 dias.',        time:'Hace 8h', read:true  }
+    ],
+    compliance: [
+      { area:'Aduana DIAN Exportacion', status:'ok',   note:'Certificado Dic 2025'   },
+      { area:'Codigo PBIP / ISPS',      status:'ok',   note:'Puerto certificado'      },
+      { area:'IMO - Convenio SOLAS',    status:'ok',   note:'Cumplimiento total'      },
+      { area:'Cert. Fitosanitario',     status:'warn', note:'Renovacion requerida'    },
+      { area:'Poliza P&I Club',         status:'ok',   note:'Vigente Ene 2026'        },
+      { area:'Manifiesto MUISCA',       status:'ok',   note:'Al dia'                  },
+      { area:'BASC Seguridad',          status:'warn', note:'Auditoria pendiente Jul' },
+      { area:'Certificado OEA',         status:'fail', note:'CTG-4823 en revision'    }
+    ]
+  },
+  carga_aerea_peru: {
+    meta: { company:'AeroLogix Peru S.A.C.', sector:'Carga Aerea y Courier' },
+    users: [
+      { email:'ceo@aerologix.pe',       pass:'demo2025', role:'executive', name:'Valentina Quispe',  init:'VQ' },
+      { email:'ops@aerologix.pe',       pass:'demo2025', role:'analyst',   name:'Diego Chavez',      init:'DC' },
+      { email:'cliente@farmaexport.pe', pass:'demo2025', role:'client',    name:'Carmen Villanueva', init:'CV' }
+    ],
+    ships: [
+      { id:'LIM-AIR821', orig:'Lima, PE',   dest:'Miami, FL',        mode:'air',  prog:85, status:'ok',      eta:'5 Jun',  cargo:'Farmaceuticos 800kg',  cost:22400, weight:'800 kg',   client:'FarmaExport SAC' },
+      { id:'LIM-AIR822', orig:'Lima, PE',   dest:'Madrid, ES',       mode:'air',  prog:42, status:'transit', eta:'7 Jun',  cargo:'Esparragos 2400kg',    cost:14800, weight:'2400 kg',  client:'AeroLogix Peru'  },
+      { id:'LIM-AIR823', orig:'Lima, PE',   dest:'Londres, UK',      mode:'air',  prog:12, status:'pend',    eta:'10 Jun', cargo:'Arandanos 3200kg',     cost:19200, weight:'3200 kg',  client:'AeroLogix Peru'  },
+      { id:'LIM-AIR824', orig:'Lima, PE',   dest:'Ciudad de Mexico', mode:'air',  prog:67, status:'transit', eta:'6 Jun',  cargo:'Flores tropicales',    cost:9400,  weight:'1800 kg',  client:'FarmaExport SAC' },
+      { id:'LIM-AIR825', orig:'Lima, PE',   dest:'Sao Paulo, BR',    mode:'air',  prog:30, status:'delay',   eta:'7 Jun',  cargo:'Equipos medicos 600kg',cost:16800, weight:'600 kg',   client:'FarmaExport SAC' },
+      { id:'CUZ-AIR101', orig:'Cusco, PE',  dest:'Bogota, CO',       mode:'air',  prog:78, status:'ok',      eta:'4 Jun',  cargo:'Quinoa 1200kg',        cost:7200,  weight:'1200 kg',  client:'AeroLogix Peru'  },
+      { id:'LIM-TRK301', orig:'Lima, PE',   dest:'Callao, PE',       mode:'land', prog:92, status:'ok',      eta:'4 Jun',  cargo:'Pre-refrigerado',      cost:1200,  weight:'5 t',      client:'AeroLogix Peru'  },
+      { id:'LIM-SEA201', orig:'Callao, PE', dest:'Rotterdam, NL',    mode:'sea',  prog:25, status:'transit', eta:'25 Jun', cargo:'Minerales 1800t',      cost:82000, weight:'1800 t',   client:'AeroLogix Peru'  }
+    ],
+    alerts: [
+      { id:1, lv:'crit', title:'LIM-AIR825 demora Sao Paulo', body:'GRU restringe vuelos nocturnos. Equipos medicos en espera.', time:'Hace 2h', read:false },
+      { id:2, lv:'warn', title:'DIGEMID guia especial',        body:'LIM-AIR825 requiere documentacion adicional antes 8 Jun.',  time:'Hace 4h', read:false },
+      { id:3, lv:'warn', title:'CEIV Pharma por renovar',      body:'Certificacion vence 15 Jul.',                               time:'Hace 6h', read:false },
+      { id:4, lv:'ok',   title:'LIM-AIR821 entregado Miami',   body:'Farmaceuticos en temperatura controlada.',                  time:'Hace 10h',read:true  }
+    ],
+    compliance: [
+      { area:'IATA DGR Mercancias',   status:'ok',   note:'Certificacion vigente'      },
+      { area:'SENASA Fitosanitario',  status:'ok',   note:'Todos aprobados'            },
+      { area:'DIGEMID Farmaceuticos', status:'warn', note:'LIM-AIR825 guia especial'   },
+      { area:'Aduana SUNAT',          status:'ok',   note:'Canal verde habilitado'     },
+      { area:'Poliza carga aerea',    status:'ok',   note:'Vigente Mar 2026'           },
+      { area:'CEIV Pharma',           status:'warn', note:'Renovacion anual pendiente' },
+      { area:'Cadena de frio GDP',    status:'ok',   note:'Monitorizada 24/7'          },
+      { area:'TACT Tarifas IATA',     status:'ok',   note:'Actualizado Abr 2025'       }
+    ]
+  },
+  logistica_terrestre_mx: {
+    meta: { company:'TransRed Mexico S.A. de C.V.', sector:'Logistica Terrestre 3PL' },
+    users: [
+      { email:'ceo@transred.mx',       pass:'demo2025', role:'executive', name:'Roberto Garza',   init:'RG' },
+      { email:'ops@transred.mx',       pass:'demo2025', role:'analyst',   name:'Sofia Ramirez',   init:'SR' },
+      { email:'cliente@autopartes.mx', pass:'demo2025', role:'client',    name:'Luis Montemayor', init:'LM' }
+    ],
+    ships: [
+      { id:'MTY-TRK501', orig:'Monterrey, MX',   dest:'Laredo, TX',       mode:'land', prog:78, status:'ok',      eta:'5 Jun',  cargo:'Autopartes x8',   cost:4800,   weight:'18 t',   client:'AutoPartes Nortena' },
+      { id:'MTY-TRK502', orig:'Monterrey, MX',   dest:'Ciudad de Mexico', mode:'land', prog:45, status:'transit', eta:'6 Jun',  cargo:'Electronicos 24t',cost:3200,   weight:'24 t',   client:'TransRed Mexico'    },
+      { id:'GDL-TRK201', orig:'Guadalajara, MX', dest:'Manzanillo, MX',   mode:'land', prog:88, status:'ok',      eta:'4 Jun',  cargo:'Contenedor LCL',  cost:2100,   weight:'12 t',   client:'TransRed Mexico'    },
+      { id:'MTY-TRK503', orig:'Monterrey, MX',   dest:'Bogota, CO',       mode:'land', prog:22, status:'pend',    eta:'18 Jun', cargo:'Maquinaria 45t',  cost:38000,  weight:'45 t',   client:'AutoPartes Nortena' },
+      { id:'CDM-TRK101', orig:'CDMX, MX',        dest:'Veracruz, MX',     mode:'land', prog:60, status:'transit', eta:'6 Jun',  cargo:'Quimicos HAZMAT', cost:5600,   weight:'8 t',    client:'TransRed Mexico'    },
+      { id:'MTY-TRK504', orig:'Monterrey, MX',   dest:'Houston, TX',      mode:'land', prog:35, status:'delay',   eta:'8 Jun',  cargo:'Refrigerado 15t', cost:8400,   weight:'15 t',   client:'AutoPartes Nortena' },
+      { id:'GDL-AIR101', orig:'Guadalajara, MX', dest:'Miami, FL',        mode:'air',  prog:70, status:'transit', eta:'5 Jun',  cargo:'Componentes',     cost:6200,   weight:'400 kg', client:'TransRed Mexico'    },
+      { id:'MAN-SEA101', orig:'Manzanillo, MX',  dest:'Shanghai, CN',     mode:'sea',  prog:15, status:'pend',    eta:'2 Jul',  cargo:'Aguacate 800t',   cost:124000, weight:'800 t',  client:'TransRed Mexico'    }
+    ],
+    alerts: [
+      { id:1, lv:'crit', title:'MTY-TRK504 cruce retrasado', body:'Revision CBP Laredo. Carga refrigerada en riesgo.', time:'Hace 1h', read:false },
+      { id:2, lv:'warn', title:'Carta Porte CFDI faltante',  body:'MTY-TRK504: complemento no generado.',              time:'Hace 2h', read:false },
+      { id:3, lv:'warn', title:'Placas HAZMAT por renovar',  body:'CDM-TRK101: vencen 10 Jun.',                        time:'Hace 4h', read:false },
+      { id:4, lv:'ok',   title:'MTY-TRK501 cruzo frontera',  body:'Autopartes despachadas Laredo.',                    time:'Hace 7h', read:true  }
+    ],
+    compliance: [
+      { area:'SCT Operador Transporte', status:'ok',   note:'Permiso federal vigente' },
+      { area:'Carta Porte CFDI 4.0',   status:'warn', note:'MTY-TRK504 complemento'  },
+      { area:'NOM-012 Carga',          status:'ok',   note:'Cumplimiento total'       },
+      { area:'Poliza Resp. Civil',     status:'ok',   note:'Vigente Ago 2025'         },
+      { area:'C-TPAT Frontera USA',    status:'ok',   note:'Certificado vigente'      },
+      { area:'HAZMAT ADR Quimicos',    status:'warn', note:'CDM-TRK101 placas'        },
+      { area:'Aduana SAT',             status:'ok',   note:'Agente habilitado'        },
+      { area:'COFEPRIS',               status:'ok',   note:'No aplica'                }
+    ]
+  }
+};
+
+// ── RUNTIME STATE ──────────────────────────────────────────────────────────
+var USERS_REF       = {};   // filled by loadProfile()
+var SHIPS           = [];
+var ALERTS          = [];
+var COMPLIANCE_DATA = [];
+var DOCS            = [];
+var role            = null;
+var charts          = {};
+var aiHistory       = [];
+var aiLoading       = false;
+var notifOpen       = false;
+var activeMode      = 'all';
+
+// ── NAV MAP ─────────────────────────────────────────────────────────────────
+var NAV_MAP = {
+  executive: [
+    { id:'dashboard',    ic:'ti-layout-dashboard', lb:'Dashboard Ejecutivo'   },
+    { id:'tracking',     ic:'ti-radar',            lb:'Trazabilidad Global'   },
+    { id:'financials',   ic:'ti-chart-bar',        lb:'Costos y Rentabilidad' },
+    { id:'predictive',   ic:'ti-brain',            lb:'Analisis Predictivo'   },
+    { id:'documents',    ic:'ti-files',            lb:'Documentos'            },
+    { id:'compliance',   ic:'ti-shield-check',     lb:'Compliance'            },
+    { id:'reports',      ic:'ti-report-analytics', lb:'Informes y Exportar'   },
+    { id:'onboarding',   ic:'ti-upload',           lb:'Importar Datos'        },
+    { id:'admin',        ic:'ti-settings',         lb:'Administracion'        },
+    { id:'ai',           ic:'ti-sparkles',         lb:'Asistente AI'          }
+  ],
+  analyst: [
+    { id:'dashboard',   ic:'ti-layout-dashboard', lb:'Dashboard Operativo'   },
+    { id:'tracking',    ic:'ti-radar',            lb:'Trazabilidad'          },
+    { id:'financials',  ic:'ti-chart-bar',        lb:'Costos y Rutas'        },
+    { id:'documents',   ic:'ti-files',            lb:'Gestion Documental'    },
+    { id:'compliance',  ic:'ti-shield-check',     lb:'Compliance'            },
+    { id:'predictive',  ic:'ti-brain',            lb:'Alertas y Prediccion'  },
+    { id:'reports',     ic:'ti-report-analytics', lb:'Informes'              },
+    { id:'onboarding',  ic:'ti-upload',           lb:'Importar Datos'        },
+    { id:'ai',          ic:'ti-sparkles',         lb:'Asistente AI'          }
+  ],
+  client: [
+    { id:'tracking',  ic:'ti-radar',            lb:'Mis Envios'   },
+    { id:'documents', ic:'ti-files',            lb:'Mis Documentos' },
+    { id:'reports',   ic:'ti-report-analytics', lb:'Mis Reportes'  }
+  ]
+};
+
+var MODE_LBL = { all:'Todos', sea:'Maritimo', land:'Terrestre', air:'Aereo' };
+
+// ── LOAD PROFILE ──────────────────────────────────────────────────────────
+function loadProfile(key) {
+  var p = DEMO_PROFILES[key] || DEMO_PROFILES.generic;
+
+  Object.keys(USERS_REF).forEach(function(k) { delete USERS_REF[k]; });
+  p.users.forEach(function(u) {
+    USERS_REF[u.email] = { pass:u.pass, role:u.role, name:u.name, init:u.init };
+  });
+
+  SHIPS.length = 0;
+  p.ships.forEach(function(s) { SHIPS.push(s); });
+
+  ALERTS.length = 0;
+  p.alerts.forEach(function(a) {
+    ALERTS.push({ id:a.id, lv:a.lv, title:a.title, body:a.body, time:a.time, read:a.read });
+  });
+
+  COMPLIANCE_DATA.length = 0;
+  p.compliance.forEach(function(c) { COMPLIANCE_DATA.push(c); });
+
+  var dtypes = { sea:'BL', air:'AWB', land:'CMR' };
+  DOCS.length = 0;
+  p.ships.forEach(function(s, i) {
+    DOCS.push({
+      type:dtypes[s.mode]||'BL',
+      name:(dtypes[s.mode]||'BL')+' - '+s.id,
+      date:'Jun 2025', mode:s.mode,
+      size:((i%4+1)*120)+' KB',
+      shipId:s.id
+    });
+  });
+
+  // Update pill labels
+  var exU = p.users.find(function(u){return u.role==='executive';}) || p.users[0];
+  var anU = p.users.find(function(u){return u.role==='analyst';})   || p.users[1]||p.users[0];
+  var clU = p.users.find(function(u){return u.role==='client';})    || p.users[p.users.length-1];
+
+  var spans = {
+    exec:    document.querySelector('#dp-exec span'),
+    analyst: document.querySelector('#dp-analyst span'),
+    client:  document.querySelector('#dp-client span')
+  };
+  if (spans.exec)    spans.exec.textContent    = exU.email + ' — ' + p.meta.company;
+  if (spans.analyst) spans.analyst.textContent = anU.email + ' — ' + p.meta.sector;
+  if (spans.client)  spans.client.textContent  = clU.email + ' — Vista cliente';
+
+  window._pu = { exec:exU, analyst:anU, client:clU };
+
+  console.log('[NAVICORE] Profile loaded:', p.meta.company,
+    '| Users:', Object.keys(USERS_REF).join(', '));
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  var m = document.getElementById('toast-msg');
+  if (!t || !m) return;
+  m.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+function filteredShips() {
+  return activeMode === 'all' ? SHIPS : SHIPS.filter(function(s) { return s.mode === activeMode; });
+}
+function unreadCount() {
+  return ALERTS.filter(function(a) { return !a.read; }).length;
+}
+function updateNotifDot() {
+  var c = unreadCount();
+  var d = document.getElementById('notif-dot');
+  if (!d) return;
+  d.textContent    = c > 9 ? '9+' : String(c);
+  d.style.display  = c > 0 ? 'flex' : 'none';
+}
+
+// ── HTML FRAGMENT BUILDERS ─────────────────────────────────────────────────
+// All use string concatenation — zero template literals — safe in HTML attrs.
+
+function sbadge(s) {
+  var m = { ok:['b-ok','On-Time'], delay:['b-dl','Retrasado'],
+            transit:['b-tr','En Transito'], pend:['b-pd','Pendiente'] };
+  var v = m[s] || ['b-tr','?'];
+  return '<span class="bdg '+v[0]+'">'+v[1]+'</span>';
+}
+function mbadge(m) {
+  var c = { sea:['b-sea','ti-anchor','Mar'], land:['b-land','ti-truck','Tierra'], air:['b-air','ti-plane','Aire'] };
+  var v = c[m] || ['b-tr','ti-box',m];
+  return '<span class="bdg '+v[0]+'"><i class="ti '+v[1]+'"></i> '+v[2]+'</span>';
+}
+function rbadge(r) {
+  var m = { executive:['b-exec','C-Level'], analyst:['b-ana','Analista'], client:['b-cli','Cliente'] };
+  var v = m[r] || ['b-tr',r];
+  return '<span class="bdg '+v[0]+'">'+v[1]+'</span>';
+}
+
+function modeTabs() {
+  var tabs = [
+    { id:'all',  ic:'ti-world',  lb:'Todos'     },
+    { id:'sea',  ic:'ti-anchor', lb:'Maritimo'  },
+    { id:'land', ic:'ti-truck',  lb:'Terrestre' },
+    { id:'air',  ic:'ti-plane',  lb:'Aereo'     }
+  ];
+  var html = '<div class="mtabs" id="mode-tabs">';
+  tabs.forEach(function(t) {
+    html += '<button class="mtab'+(activeMode===t.id?' active':'')+'" data-mode="'+t.id+'">'
+          + '<i class="ti '+t.ic+'"></i> '+t.lb+'</button>';
+  });
+  return html + '</div>';
+}
+
+function expBar() {
+  return '<div class="exp-bar">'
+    + '<span style="font-size:10px;color:var(--muted)"><i class="ti ti-download"></i> Exportar:</span>'
+    + '<button class="exp-btn e-pdf" data-action="pdf"><i class="ti ti-file-type-pdf"></i> PDF</button>'
+    + '<button class="exp-btn e-xl"  data-action="xl"><i class="ti ti-table"></i> Excel</button>'
+    + '<button class="exp-btn e-csv" data-action="csv"><i class="ti ti-file-spreadsheet"></i> CSV</button>'
+    + '</div>';
+}
+
+function kpiGrid(items) {
+  var html = '<div class="kpi-grid">';
+  items.forEach(function(i) {
+    var delta = i.delta
+      ? '<div class="kpi-delta '+(i.dt||'nt')+'">'
+        +(i.dt==='up'?'&#8593;':i.dt==='dn'?'&#8595;':'&#8594;')
+        +' '+i.delta+'</div>'
+      : '';
+    html += '<div class="kpi '+(i.cls||'c')+'">'
+      + '<div class="kpi-lbl">'+i.lbl+'</div>'
+      + '<div class="kpi-val">'+i.val+'</div>'
+      + delta+'</div>';
+  });
+  return html+'</div>';
+}
+
+function alertRows(items) {
+  var icons = { crit:'ti-alert-circle', warn:'ti-alert-triangle', ok:'ti-circle-check', info:'ti-info-circle' };
+  return items.map(function(a) {
+    return '<div class="alert-row a-'+a.lv+'">'
+      +'<i class="ti '+(icons[a.lv]||'ti-bell')+'" style="font-size:14px;flex-shrink:0;margin-top:1px"></i>'
+      +'<div><div class="a-t">'+a.title+'</div>'
+      +'<div class="a-b">'+a.body+'</div>'
+      +'<div class="a-tm">'+a.time+'</div></div></div>';
+  }).join('');
+}
+
+function emptyState(icon, title, sub) {
+  return '<div class="empty-state"><i class="ti '+icon+'"></i><p>'
+    +title+(sub?'<br><span style="font-size:10px;opacity:.7">'+sub+'</span>':'')
+    +'</p></div>';
+}
+
+// ── EXPORT ────────────────────────────────────────────────────────────────
+function exportExcel() {
+  if (typeof XLSX === 'undefined') { showToast('Libreria Excel cargando, intenta en 2s'); return; }
+  var ships = filteredShips();
+  var rows  = ships.map(function(s) {
+    return { ID:s.id, Origen:s.orig, Destino:s.dest, Modo:s.mode,
+             Estado:s.status, ETA:s.eta, CostoUSD:s.cost };
+  });
+  var ws = XLSX.utils.json_to_sheet(rows);
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Envios');
+  XLSX.writeFile(wb, 'navicore-envios.xlsx');
+  showToast('Excel descargado');
+}
+
+function exportCSV() {
+  var ships   = filteredShips();
+  var headers = ['ID','Origen','Destino','Modo','Estado','ETA','Costo USD'];
+  var rows    = ships.map(function(s) {
+    return [s.id, s.orig, s.dest, s.mode, s.status, s.eta, s.cost]
+      .map(function(v) { return '"'+String(v).replace(/"/g,'""')+'"'; })
+      .join(',');
+  });
+  var csv  = [headers.join(',')].concat(rows).join('\n');
+  var blob = new Blob([csv], { type:'text/csv' });
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'navicore-envios.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('CSV descargado');
+}
+
+// ── NOTIFICATIONS ─────────────────────────────────────────────────────────
+function toggleNotif() {
+  notifOpen = !notifOpen;
+  var panel = document.getElementById('notif-panel');
+  if (!panel) return;
+  if (notifOpen) { panel.classList.add('open'); renderNotifPanel(); }
+  else           { panel.classList.remove('open'); }
+}
+
+function renderNotifPanel() {
+  var lc = { crit:'var(--danger)', warn:'var(--warn)', ok:'var(--success)', info:'var(--cyan)' };
+  var li = { crit:'ti-alert-circle', warn:'ti-alert-triangle', ok:'ti-circle-check', info:'ti-info-circle' };
+  var nl = document.getElementById('notif-list');
+  if (!nl) return;
+  if (!ALERTS.length) {
+    nl.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted);font-size:11px">'
+      + '<i class="ti ti-bell-off" style="font-size:24px;display:block;margin-bottom:8px;opacity:.3"></i>'
+      + 'Sin notificaciones</div>';
+    return;
+  }
+  var html = '';
+  ALERTS.forEach(function(a) {
+    var bg  = a.read ? '' : 'background:rgba(0,194,204,0.04);';
+    var bc  = a.read ? '' : 'border-left-color:'+(lc[a.lv]||'var(--cyan)')+';';
+    var nw  = a.read ? '' : '<span style="font-size:8px;background:var(--danger);color:#fff;padding:1px 5px;border-radius:3px;margin-left:6px">NUEVO</span>';
+    html += '<div class="notif-item'+(a.read?'':' unread')+'" style="'+bg+bc+'" data-nid="'+a.id+'">'
+      + '<div class="notif-t"><i class="ti '+(li[a.lv]||'ti-bell')+'" style="color:'+(lc[a.lv]||'var(--cyan)')+';margin-right:4px"></i>'
+      + a.title+nw+'</div>'
+      + '<div class="notif-b">'+a.body+'</div>'
+      + '<div class="notif-tm">'+a.time+'</div></div>';
+  });
+  nl.innerHTML = html;
+}
+
+function readNotif(id) {
+  var a = ALERTS.find(function(x) { return x.id === id; });
+  if (a) a.read = true;
+  updateNotifDot();
+  renderNotifPanel();
+}
+
+function markAllRead() {
+  ALERTS.forEach(function(a) { a.read = true; });
+  updateNotifDot();
+  renderNotifPanel();
+  showToast('Todas marcadas como leidas');
+}
+
+function addLiveNotif() {
+  var msgs = [
+    { lv:'info', title:'Datos sincronizados', body:'Flota actualizada — '+SHIPS.length+' envios rastreados.' },
+    { lv:'warn', title:'Puerto congestionado', body:'Demoras 4-6h reportadas. Revisa envios maritimos.' }
+  ];
+  var m = msgs[Math.floor(Math.random()*msgs.length)];
+  ALERTS.unshift({ id:Date.now(), lv:m.lv, title:m.title, body:m.body, time:'Ahora mismo', read:false });
+  updateNotifDot();
+  showToast(m.title);
+}
+
+// ── AUTH ──────────────────────────────────────────────────────────────────
+function doLogin() {
+  var emailEl = document.getElementById('li-email');
+  var passEl  = document.getElementById('li-pass');
+  var errEl   = document.getElementById('li-err');
+  var btnEl   = document.getElementById('btn-login');
+  if (!emailEl || !passEl || !errEl) return;
+
+  var email = emailEl.value.trim();
+  var pass  = passEl.value;
+
+  errEl.style.display = 'none';
+
+  if (!email || !pass) {
+    errEl.textContent   = 'Ingresa tu correo y contrasena.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  var u = USERS_REF[email];
+  if (!u || u.pass !== pass) {
+    errEl.textContent   = 'Credenciales incorrectas. Usa los accesos demo abajo.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  // Valid login
+  if (btnEl) { btnEl.textContent = 'Cargando...'; btnEl.disabled = true; }
+
+  role = u.role;
+  var ls = document.getElementById('login-screen');
+  if (ls) ls.style.display = 'none';
+
+  document.getElementById('u-av').textContent   = u.init;
+  document.getElementById('u-name').textContent = u.name;
+  var roleLabels = { executive:'C-Level', analyst:'Analista', client:'Cliente' };
+  document.getElementById('u-role').textContent = roleLabels[u.role] || u.role;
+
+  buildNav(u.role);
+  updateNotifDot();
+  var firstPage = (NAV_MAP[u.role] || [])[0];
+  if (firstPage) goTo(firstPage.id);
+  setTimeout(addLiveNotif, 8000);
+}
+
+function quickLogin(email, pass) {
+  var emailEl = document.getElementById('li-email');
+  var passEl  = document.getElementById('li-pass');
+  if (emailEl) emailEl.value = email;
+  if (passEl)  passEl.value  = pass;
+  doLogin();
+}
+
+function doLogout() {
+  Object.keys(charts).forEach(function(k) {
+    try { charts[k].destroy(); } catch(e) {}
+  });
+  charts     = {};
+  role       = null;
+  aiHistory  = [];
+  notifOpen  = false;
+  activeMode = 'all';
+
+  var panel = document.getElementById('notif-panel');
+  if (panel) panel.classList.remove('open');
+
+  var ls = document.getElementById('login-screen');
+  if (ls) ls.style.display = 'flex';
+
+  var emailEl = document.getElementById('li-email');
+  var passEl  = document.getElementById('li-pass');
+  var btnEl   = document.getElementById('btn-login');
+  var errEl   = document.getElementById('li-err');
+  if (emailEl) emailEl.value      = '';
+  if (passEl)  passEl.value       = '';
+  if (btnEl)   { btnEl.textContent = 'Ingresar al Portal'; btnEl.disabled = false; }
+  if (errEl)   errEl.style.display = 'none';
+  document.title = 'NAVICORE — Logistics Intelligence Platform';
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────
+function buildNav(r) {
+  var items = NAV_MAP[r] || [];
+  var html  = '<div class="sb-section">Menu</div>';
+  items.forEach(function(n) {
+    var dot = (n.id === 'admin') ? '<span class="nav-badge"></span>' : '';
+    html += '<div class="nav-item" data-page="'+n.id+'">'
+      +'<i class="ti '+n.ic+'"></i>'+n.lb+dot+'</div>';
+  });
+  var menu = document.getElementById('nav-menu');
+  if (menu) menu.innerHTML = html;
+}
+
+function setMode(m) {
+  activeMode = m;
+  var active = document.querySelector('.nav-item.active');
+  if (active) goTo(active.getAttribute('data-page'));
+}
+
+function goTo(pid) {
+  // Update active nav item
+  document.querySelectorAll('.nav-item').forEach(function(el) { el.classList.remove('active'); });
+  var navEl = document.querySelector('[data-page="'+pid+'"]');
+  if (navEl) navEl.classList.add('active');
+
+  // Destroy old charts
+  Object.keys(charts).forEach(function(k) { try { charts[k].destroy(); } catch(e) {} });
+  charts = {};
+
+  var mc = document.getElementById('main');
+  if (!mc) return;
+  mc.scrollTop = 0;
+
+  var pageKey = (pid === 'dashboard') ? 'dashboard-'+role : pid;
+  var builders = {
+    'dashboard-executive': buildExecDash,
+    'dashboard-analyst':   buildAnalystDash,
+    'tracking':    buildTrackPage,
+    'financials':  buildFinancePage,
+    'documents':   buildDocsPage,
+    'compliance':  buildCompPage,
+    'predictive':  buildPredPage,
+    'reports':     buildReportsPage,
+    'onboarding':  buildOnboardingPage,
+    'admin':       buildAdminPage,
+    'ai':          buildAIPage
+  };
+
+  var builder = builders[pageKey] || builders[pid];
+  mc.innerHTML = builder
+    ? builder()
+    : '<div style="padding:40px;text-align:center;color:var(--muted)">Pagina no disponible</div>';
+
+  document.title = 'NAVICORE — '+pid.charAt(0).toUpperCase()+pid.slice(1);
+  setTimeout(function() { initCharts(pid); }, 80);
+}
+
+// ── PAGE BUILDERS ─────────────────────────────────────────────────────────
+
+function buildExecDash() {
+  var ships   = filteredShips();
+  var total   = ships.length;
+  var onTime  = ships.filter(function(s){return s.status==='ok';}).length;
+  var delayed = ships.filter(function(s){return s.status==='delay';}).length;
+  var revenue = ships.reduce(function(a,s){return a+s.cost;},0);
+  var otr     = total>0 ? Math.round(onTime/total*1000)/10 : 0;
+  var date    = new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'});
+
+  var trows = ships.map(function(s) {
+    return '<tr>'
+      +'<td style="font-family:monospace;color:var(--cyan);font-size:10px">'+s.id+'</td>'
+      +'<td style="font-size:10px">'+s.orig+' &#8594; '+s.dest+'</td>'
+      +'<td>'+mbadge(s.mode)+'</td>'
+      +'<td style="font-size:10px">'+s.eta+'</td>'
+      +'<td>'+sbadge(s.status)+'</td>'
+      +'<td style="font-size:10px">$'+s.cost.toLocaleString()+'</td></tr>';
+  }).join('');
+
+  return '<div class="page-hdr"><div>'
+    +'<div class="page-title">Dashboard Ejecutivo</div>'
+    +'<div class="page-sub">'+(activeMode==='all'?'Vista global':'Modo: '+MODE_LBL[activeMode])
+    +' &middot; '+ships.length+' envios &middot; '+date+'</div>'
+    +'</div>'+modeTabs()+'</div>'
+    +expBar()
+    +kpiGrid([
+      {lbl:'Envios Activos',   val:total,            delta:'+12% vs mes ant.', dt:'up', cls:'c'},
+      {lbl:'On-Time Rate',     val:otr+'%',          delta:delayed>0?delayed+' retrasados':'Sin retrasos', dt:delayed>0?'dn':'up', cls:'g'},
+      {lbl:'Revenue Total',    val:'$'+revenue.toLocaleString(), delta:'+8.5%', dt:'up', cls:'c'},
+      {lbl:'Alertas Abiertas', val:unreadCount(),    delta:'', dt:'dn', cls:'w'}
+    ])
+    +'<div class="chart-grid">'
+    +'<div class="card"><div class="card-title"><i class="ti ti-chart-bar"></i>Volumen por modo &middot; 6 meses</div>'
+    +'<div style="position:relative;height:140px"><canvas id="ch-vol"></canvas></div></div>'
+    +'<div class="card"><div class="card-title"><i class="ti ti-clock-check"></i>On-Time por modo (%)</div>'
+    +'<div style="position:relative;height:140px"><canvas id="ch-ot"></canvas></div></div>'
+    +'<div class="card chart-full"><div class="card-title"><i class="ti ti-currency-dollar"></i>Revenue mensual por modo (USD K)</div>'
+    +'<div style="position:relative;height:110px"><canvas id="ch-rev"></canvas></div></div>'
+    +'</div>'
+    +'<div class="card"><div class="card-title"><i class="ti ti-list"></i>Envios activos ('+ships.length+')</div>'
+    +(ships.length===0 ? emptyState('ti-inbox','Sin envios '+MODE_LBL[activeMode],'Prueba otro modo')
+      : '<div class="scroll-wrap"><table class="tbl"><thead><tr><th>ID</th><th>Ruta</th><th>Modo</th><th>ETA</th><th>Estado</th><th>Costo</th></tr></thead>'
+        +'<tbody>'+trows+'</tbody></table></div>')
+    +'</div>'
+    +'<div class="card"><div class="card-title"><i class="ti ti-bell"></i>Alertas recientes</div>'
+    +alertRows(ALERTS.slice(0,4))+'</div>';
+}
+
+function buildAnalystDash() {
+  var ships   = filteredShips();
+  var total   = ships.length;
+  var onTime  = ships.filter(function(s){return s.status==='ok';}).length;
+  var delayed = ships.filter(function(s){return s.status==='delay';}).length;
+  var transit = ships.filter(function(s){return s.status==='transit';}).length;
+  var otr     = total>0 ? Math.round(onTime/total*1000)/10 : 0;
+
+  var trows = ships.map(function(s) {
+    return '<tr>'
+      +'<td style="font-family:monospace;color:var(--cyan);font-size:10px">'+s.id+'</td>'
+      +'<td style="font-size:10px">'+s.orig+' &#8594; '+s.dest+'</td>'
+      +'<td>'+mbadge(s.mode)+'</td>'
+      +'<td style="font-size:10px">'+s.weight+'</td>'
+      +'<td style="font-size:10px">'+s.eta+'</td>'
+      +'<td>'+sbadge(s.status)+'</td>'
+      +'<td style="font-size:10px">$'+s.cost.toLocaleString()+'</td></tr>';
+  }).join('');
+
+  var showSea  = activeMode==='all'||activeMode==='sea';
+  var showLand = activeMode==='all'||activeMode==='land';
+  var showAir  = activeMode==='all'||activeMode==='air';
+
+  return '<div class="page-hdr"><div>'
+    +'<div class="page-title">Dashboard Operativo</div>'
+    +'<div class="page-sub">'+(activeMode==='all'?'Vista completa &middot; Analista':'Filtrando: '+MODE_LBL[activeMode])+' &middot; '+total+' envios</div>'
+    +'</div>'+modeTabs()+'</div>'
+    +expBar()
+    +kpiGrid([
+      {lbl:'Activos',     val:total,   delta:'+12%', dt:'up', cls:'c'},
+      {lbl:'En Transito', val:transit, delta:total>0?Math.round(transit/total*100)+'%':'-', dt:'nt', cls:'c'},
+      {lbl:'On-Time',     val:onTime,  delta:otr+'% OTR', dt:otr>=80?'up':'dn', cls:'g'},
+      {lbl:'Retrasados',  val:delayed, delta:total>0?Math.round(delayed/total*100)+'%':'-', dt:delayed>0?'dn':'up', cls:delayed>0?'r':'g'}
+    ])
+    +'<div class="chart-grid">'
+    +'<div class="card"><div class="card-title"><i class="ti ti-clock"></i>Transito promedio (dias)</div>'
+    +'<div style="margin-top:12px">'
+    +(showSea  ? '<div class="mb-row"><span class="mb-lbl">Maritimo</span><div class="mb-track"><div class="mb-fill" style="width:100%;background:var(--slate2)"></div></div><span class="mb-val" style="color:var(--slate2)">18.4d</span></div>' : '')
+    +(showLand ? '<div class="mb-row"><span class="mb-lbl">Terrestre</span><div class="mb-track"><div class="mb-fill" style="width:18%;background:var(--success)"></div></div><span class="mb-val" style="color:var(--success)">3.3d</span></div>' : '')
+    +(showAir  ? '<div class="mb-row"><span class="mb-lbl">Aereo</span><div class="mb-track"><div class="mb-fill" style="width:8%;background:var(--cyan)"></div></div><span class="mb-val" style="color:var(--cyan)">1.5d</span></div>' : '')
+    +'</div></div>'
+    +'<div class="card"><div class="card-title"><i class="ti ti-chart-donut"></i>'
+    +(activeMode==='all'?'Distribucion por modo':'Por estado - '+MODE_LBL[activeMode])
+    +'</div><div style="position:relative;height:120px"><canvas id="ch-dist"></canvas></div></div>'
+    +'</div>'
+    +'<div class="card"><div class="card-title"><i class="ti ti-list"></i>Envios ('+ships.length+')</div>'
+    +(ships.length===0 ? emptyState('ti-inbox','Sin envios '+MODE_LBL[activeMode],'Prueba otro modo')
+      : '<div class="scroll-wrap"><table class="tbl"><thead><tr><th>ID</th><th>Ruta</th><th>Modo</th><th>Peso</th><th>ETA</th><th>Estado</th><th>Costo</th></tr></thead>'
+        +'<tbody>'+trows+'</tbody></table></div>')
+    +'</div>';
+}
+
+function buildTrackPage() {
+  var allShips = role==='client' ? SHIPS.slice(0,3) : SHIPS;
+  var ships    = activeMode==='all' ? allShips : allShips.filter(function(s){return s.mode===activeMode;});
+  var steps    = {
+    sea:  ['Origen','Aduana','Zarpe','Alta Mar','Puerto','Entrega'],
+    air:  ['Origen','Check-in','Vuelo','Aduana','Destino'],
+    land: ['Origen','Ruta','Revision','Destino']
+  };
+  var sColors  = { ok:'var(--success)', delay:'var(--danger)', transit:'var(--cyan)', pend:'var(--warn)' };
+
+  var cards = ships.map(function(s) {
+    var st   = steps[s.mode] || steps.land;
+    var tot  = st.length - 1;
+    var done = tot > 0 ? Math.floor(s.prog/100*tot) : 0;
+    var pc   = sColors[s.status] || 'var(--cyan)';
+
+    var timeline = st.map(function(step, i) {
+      var dotBg  = i<done ? 'var(--success)' : (i===done ? 'var(--cyan)' : 'rgba(107,130,153,.2)');
+      var lineBg = i<done ? 'var(--success)' : 'rgba(107,130,153,.1)';
+      var txtCol = i<=done ? 'var(--muted)' : 'rgba(107,130,153,.3)';
+      var line   = i<st.length-1
+        ? '<div style="flex:1;height:1.5px;background:'+lineBg+'"></div>'
+        : '';
+      return '<div style="display:flex;flex-direction:column;align-items:center;flex:'+(i<st.length-1?'1':'0 0 auto')+'">'
+        +'<div style="display:flex;align-items:center;width:100%">'
+        +'<div style="width:7px;height:7px;border-radius:50%;flex-shrink:0;background:'+dotBg+'"></div>'
+        +line+'</div>'
+        +'<span style="font-size:8px;margin-top:3px;white-space:nowrap;color:'+txtCol+'">'+step+'</span></div>';
+    }).join('');
+
+    return '<div class="track-card">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">'
+      +'<div>'
+      +'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:16px;letter-spacing:2px;color:var(--cyan)">'+s.id+'</div>'
+      +'<div style="font-size:10px;color:var(--muted);margin-top:2px">'+s.orig+' &#8594; '+s.dest+'</div>'
+      +'<div style="font-size:9.5px;color:var(--muted2);margin-top:2px">'+s.cargo+' &middot; '+s.client+'</div>'
+      +'</div>'
+      +'<div style="text-align:right;flex-shrink:0">'+sbadge(s.status)
+      +'<div style="font-size:10px;color:var(--muted);margin-top:4px">ETA: <span style="color:var(--cyan)">'+s.eta+'</span></div>'
+      +'<div style="margin-top:4px">'+mbadge(s.mode)+'</div></div>'
+      +'</div>'
+      +'<div style="height:2.5px;background:rgba(107,130,153,.12);border-radius:2px;margin:10px 0 5px;overflow:hidden">'
+      +'<div style="height:100%;background:'+pc+';width:'+s.prog+'%;border-radius:2px;transition:width .4s"></div></div>'
+      +'<div style="display:flex;justify-content:space-between;font-size:9.5px;color:var(--muted);margin-bottom:10px">'
+      +'<span>'+s.prog+'% completado</span><span>$'+s.cost.toLocaleString()+'</span></div>'
+      +'<div style="display:flex;align-items:center">'+timeline+'</div>'
+      +'</div>';
+  }).join('');
+
+  return '<div class="page-hdr"><div>'
+    +'<div class="page-title">'+(role==='client'?'Mis Envios':'Trazabilidad Global')+'</div>'
+    +'<div class="page-sub">Seguimiento en tiempo real &middot; '+ships.length+' envios'
+    +(activeMode!=='all'?' &middot; '+MODE_LBL[activeMode]:'')+'</div>'
+    +'</div>'+(role!=='client'?modeTabs():'')+'</div>'
+    +expBar()
+    +(ships.length===0
+      ? emptyState('ti-radar','Sin envios en '+MODE_LBL[activeMode],'Selecciona otro modo')
+      : cards);
+}
+
+function buildFinancePage() {
+  var ships   = filteredShips();
+  var revenue = ships.reduce(function(a,s){return a+s.cost;},0);
+  var cost    = Math.round(revenue*0.68);
+  var margin  = revenue>0 ? Math.round((revenue-cost)/revenue*1000)/10 : 0;
+  var avg     = ships.length>0 ? Math.round(cost/ships.length) : 0;
+
+  var showSea  = activeMode==='all'||activeMode==='sea';
+  var showLand = activeMode==='all'||activeMode==='land';
+  var showAir  = activeMode==='all'||activeMode==='air';
+
+  var trows = ships.map(function(s) {
+    var c = Math.round(s.cost*0.68);
+    var m = s.cost>0 ? Math.round((s.cost-c)/s.cost*100) : 0;
+    return '<tr>'
+      +'<td><div style="font-family:monospace;font-size:10px;color:var(--cyan)">'+s.id+'</div>'
+      +'<div style="font-size:9.5px;color:var(--muted)">'+s.orig+' &#8594; '+s.dest+'</div></td>'
+      +'<td>'+mbadge(s.mode)+'</td>'
+      +'<td>$'+s.cost.toLocaleString()+'</td>'
+      +'<td>$'+c.toLocaleString()+'</td>'
+      +'<td style="color:'+(m>=30?'var(--success)':'var(--warn)')+'">'+m+'%</td>'
+      +'<td>'+sbadge(s.status)+'</td></tr>';
+  }).join('');
+
+  var clientBars = ships.slice(0,4).map(function(s) {
+    var max = ships.reduce(function(a,x){return Math.max(a,x.cost);},1);
+    var pct = Math.round(s.cost/max*100);
+    return '<div class="mb-row">'
+      +'<span class="mb-lbl" style="width:90px;font-size:9.5px">'+s.client.split(' ')[0]+'</span>'
+      +'<div class="mb-track"><div class="mb-fill" style="width:'+pct+'%;background:var(--cyan)"></div></div>'
+      +'<span class="mb-val">$'+Math.round(s.cost/1000)+'K</span></div>';
+  }).join('');
+
+  return '<div class="page-hdr"><div>'
+    +'<div class="page-title">Costos y Rentabilidad</div>'
+    +'<div class="page-sub">'+(activeMode==='all'?'Analisis financiero completo':'Solo '+MODE_LBL[activeMode])+' &middot; '+ships.length+' envios</div>'
+    +'</div>'+modeTabs()+'</div>'
+    +expBar()
+    +kpiGrid([
+      {lbl:'Revenue Total',   val:'$'+revenue.toLocaleString(), delta:'+8.5%', dt:'up', cls:'g'},
+      {lbl:'Costo Operativo', val:'$'+cost.toLocaleString(),    delta:'+3.2%', dt:'up', cls:'c'},
+      {lbl:'Margen Bruto',    val:margin+'%',                   delta:'+1.8pp', dt:'up', cls:'c'},
+      {lbl:'Costo / Envio',   val:ships.length?'$'+avg.toLocaleString():'-', delta:ships.length+' envios', dt:'dn', cls:'w'}
+    ])
+    +'<div class="card"><div class="card-title"><i class="ti ti-chart-bar"></i>Revenue vs Costo &middot; 6 meses</div>'
+    +'<div style="position:relative;height:155px"><canvas id="ch-fin"></canvas></div></div>'
+    +'<div class="chart-grid">'
+    +'<div class="card"><div class="card-title"><i class="ti ti-chart-donut"></i>Margen por modo</div>'
+    +'<div style="margin-top:10px">'
+    +(showAir  ? '<div class="mb-row"><span class="mb-lbl">Aereo</span><div class="mb-track"><div class="mb-fill" style="width:73%;background:var(--cyan)"></div></div><span class="mb-val" style="color:var(--cyan)">36.5%</span></div>' : '')
+    +(showSea  ? '<div class="mb-row"><span class="mb-lbl">Maritimo</span><div class="mb-track"><div class="mb-fill" style="width:68%;background:var(--slate2)"></div></div><span class="mb-val" style="color:var(--slate2)">34.1%</span></div>' : '')
+    +(showLand ? '<div class="mb-row"><span class="mb-lbl">Terrestre</span><div class="mb-track"><div class="mb-fill" style="width:46%;background:var(--success)"></div></div><span class="mb-val" style="color:var(--success)">23.0%</span></div>' : '')
+    +'</div></div>'
+    +'<div class="card"><div class="card-title"><i class="ti ti-users"></i>Top clientes &middot; Revenue</div>'
+    +'<div style="margin-top:10px">'+(ships.length===0?'<div style="color:var(--muted);font-size:11px;text-align:center;padding:12px">Sin datos</div>':clientBars)+'</div></div>'
+    +'</div>'
+    +'<div class="card"><div class="card-title"><i class="ti ti-route"></i>Detalle financiero</div>'
+    +(ships.length===0 ? emptyState('ti-coin','Sin envios '+MODE_LBL[activeMode])
+      : '<table class="tbl"><thead><tr><th>ID / Ruta</th><th>Modo</th><th>Revenue</th><th>Costo Est.</th><th>Margen</th><th>Estado</th></tr></thead>'
+        +'<tbody>'+trows+'</tbody></table>')
+    +'</div>';
+}
+
+function buildDocsPage() {
+  var allDocs  = role==='client' ? DOCS.slice(0,4) : DOCS;
+  var filtered = activeMode==='all' ? allDocs : allDocs.filter(function(d){return d.mode===activeMode;});
+  var TYPE_LABELS = {BL:'Bill of Lading',AWB:'Air Waybill',CMR:'CMR Carta Porte',INV:'Factura',POL:'Poliza',DUA:'DUA'};
+  var TYPE_ICONS  = {BL:'ti-anchor',AWB:'ti-plane',CMR:'ti-truck',INV:'ti-coin',POL:'ti-shield',DUA:'ti-building-bank'};
+  var modeC = {sea:'#7BBDE0',land:'var(--success)',air:'var(--cyan)'};
+
+  var cards = filtered.map(function(d) {
+    var icon  = TYPE_ICONS[d.type] || 'ti-file-description';
+    var label = TYPE_LABELS[d.type] || d.type;
+    var mc    = modeC[d.mode] || 'var(--muted)';
+    var canEdit = role !== 'client';
+    return '<div class="doc-card">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
+      +'<div style="width:36px;height:36px;background:rgba(0,194,204,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--cyan);font-size:14px;flex-shrink:0">'
+      +'<i class="ti '+icon+'"></i></div>'
+      +'<span style="font-size:10px;font-weight:700;background:'+mc+'22;color:'+mc+';padding:2px 7px;border-radius:4px">'+d.type+'</span>'
+      +'</div>'
+      +'<div style="font-size:11.5px;color:var(--white);margin-bottom:3px">'+d.name+'</div>'
+      +'<div style="font-size:10px;color:var(--muted);margin-bottom:10px">'+label+' &middot; '+d.size+' &middot; '+d.date+'</div>'
+      +'<div style="display:flex;gap:5px">'
+      +'<button class="btn btn-ghost btn-sm" style="flex:1" data-action="doc-view"><i class="ti ti-eye"></i> Ver</button>'
+      +(canEdit?'<button class="btn btn-ghost btn-sm" style="flex:1" data-action="doc-edit"><i class="ti ti-edit"></i> Editar</button>':'')
+      +'<button class="btn btn-ghost btn-sm" data-action="doc-dl"><i class="ti ti-download"></i></button>'
+      +'</div></div>';
+  }).join('');
+
+  return '<div class="page-hdr"><div>'
+    +'<div class="page-title">'+(role==='client'?'Mis Documentos':'Gestion Documental')+'</div>'
+    +'<div class="page-sub">BL &middot; AWB &middot; CMR &middot; '+filtered.length+' archivos</div>'
+    +'</div></div>'
+    +(filtered.length===0 ? emptyState('ti-files','Sin documentos '+MODE_LBL[activeMode])
+      : '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">'+cards+'</div>');
+}
+
+function buildCompPage() {
+  var ci    = COMPLIANCE_DATA.length ? COMPLIANCE_DATA : [{area:'Aduana',status:'ok',note:'OK'}];
+  var ok    = ci.filter(function(x){return x.status==='ok';}).length;
+  var warn  = ci.filter(function(x){return x.status==='warn';}).length;
+  var fail  = ci.filter(function(x){return x.status==='fail';}).length;
+  var score = ci.length ? Math.round(ok/ci.length*100) : 100;
+
+  var grid = ci.map(function(c) {
+    var col = c.status==='ok'?'var(--success)':c.status==='warn'?'var(--warn)':'var(--danger)';
+    var lbl = c.status==='ok'?'Conforme':c.status==='warn'?'Revisar':'Incidencia';
+    return '<div class="comp-card">'
+      +'<div style="display:flex;align-items:center;margin-bottom:3px">'
+      +'<span class="comp-dot" style="background:'+col+'"></span>'
+      +'<span style="font-size:11px;font-weight:500">'+c.area+'</span></div>'
+      +'<div style="font-size:10.5px;color:'+col+'">'+lbl+'</div>'
+      +'<div style="font-size:9.5px;color:var(--muted);margin-top:1px">'+c.note+'</div></div>';
+  }).join('');
+
+  return '<div class="page-hdr"><div>'
+    +'<div class="page-title">Compliance y Regulatorio</div>'
+    +'<div class="page-sub">Score global: '+score+'% &middot; '+ci.length+' areas</div>'
+    +'</div></div>'
+    +expBar()
+    +kpiGrid([
+      {lbl:'Score Global',  val:score+'%', delta:'+2pp', dt:'up', cls:'g'},
+      {lbl:'Conformes',     val:ok,         delta:ok+' areas',  dt:'up', cls:'g'},
+      {lbl:'Por Revisar',   val:warn,        delta:warn+' areas',dt:warn>0?'dn':'up', cls:'w'},
+      {lbl:'Incidencias',   val:fail,        delta:fail>0?'Atencion':'OK', dt:fail>0?'dn':'up', cls:fail>0?'r':'g'}
+    ])
+    +'<div class="card"><div class="card-title"><i class="ti ti-shield"></i>Estado por area regulatoria</div>'
+    +'<div class="comp-grid">'+grid+'</div></div>';
+}
+
+function buildPredPage() {
+  var ships   = filteredShips();
+  var delayed = ships.filter(function(s){return s.status==='delay';}).length;
+  var riskRoutes = [
+    {route:'MED-BUN', mode:'land', score:81, color:'var(--danger)'},
+    {route:'CTG-RTM', mode:'sea',  score:62, color:'var(--warn)'  },
+    {route:'LIM-HAM', mode:'sea',  score:44, color:'var(--warn)'  },
+    {route:'BOG-MIA', mode:'air',  score:18, color:'var(--success)'},
+    {route:'CLO-BOG', mode:'land', score:12, color:'var(--success)'}
+  ];
+  var filtRisk = activeMode==='all' ? riskRoutes : riskRoutes.filter(function(r){return r.mode===activeMode;});
+
+  var riskBars = filtRisk.length>0 ? filtRisk.map(function(r) {
+    var lbl  = r.score>=70?'Alto':r.score>=40?'Medio':'Bajo';
+    var desc = r.score>=70?'Intervencion inmediata recomendada.':r.score>=40?'Monitorear activamente.':'Sin factores de riesgo.';
+    return '<div style="padding:10px 12px;background:var(--navy3);border-radius:8px;margin-bottom:7px">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">'
+      +'<div style="display:flex;align-items:center;gap:7px">'
+      +'<span style="font-family:monospace;font-size:11px;color:var(--cyan)">'+r.route+'</span>'
+      +'<span style="font-size:9.5px;color:'+r.color+'">'+lbl+'</span>'
+      +'</div>'
+      +'<span style="font-family:\'Bebas Neue\',sans-serif;font-size:24px;color:'+r.color+';line-height:1">'+r.score+'</span></div>'
+      +'<div style="height:5px;background:rgba(107,130,153,0.1);border-radius:3px;overflow:hidden;margin-bottom:4px">'
+      +'<div style="height:100%;width:'+r.score+'%;background:'+r.color+';border-radius:3px"></div></div>'
+      +'<div style="font-size:10px;color:var(--muted)">'+desc+'</div></div>';
+  }).join('') : emptyState('ti-check','Sin rutas de riesgo en '+MODE_LBL[activeMode]);
+
+  return '<div class="page-hdr"><div>'
+    +'<div class="page-title">Analisis Predictivo</div>'
+    +'<div class="page-sub">Alertas &middot; Proyecciones &middot; Riesgo'
+    +(activeMode!=='all'?' &middot; '+MODE_LBL[activeMode]:'')+'</div>'
+    +'</div>'+modeTabs()+'</div>'
+    +expBar()
+    +'<div class="stat-row">'
+    +'<div class="stat-item"><div class="stat-n">+23%</div><div class="stat-l">Crecimiento Q3</div></div>'
+    +'<div class="stat-item"><div class="stat-n" style="color:var(--danger)">'+(filtRisk[0]?filtRisk[0].score:81)+'</div><div class="stat-l">Riesgo max.</div></div>'
+    +'<div class="stat-item"><div class="stat-n" style="color:var(--success)">$420K</div><div class="stat-l">Ahorro proyectado</div></div>'
+    +'<div class="stat-item"><div class="stat-n">'+delayed+'</div><div class="stat-l">Retrasados</div></div>'
+    +'</div>'
+    +'<div class="card"><div class="card-title"><i class="ti ti-bell-ringing"></i>Alertas activas</div>'
+    +alertRows(ALERTS.slice(0,4))+'</div>'
+    +'<div class="chart-grid">'
+    +'<div class="card"><div class="card-title"><i class="ti ti-chart-line"></i>Proyeccion de volumen &middot; 4 meses</div>'
+    +'<div style="position:relative;height:130px"><canvas id="ch-pred"></canvas></div></div>'
+    +'<div class="card"><div class="card-title"><i class="ti ti-alert-triangle"></i>Score de riesgo</div>'
+    +'<div style="margin-top:8px">'+riskBars+'</div></div>'
+    +'</div>';
+}
+
+function buildReportsPage() {
+  var ships   = filteredShips();
+  var revenue = ships.reduce(function(a,s){return a+s.cost;},0);
+  var reports = [
+    {ic:'ti-chart-bar',    t:'Reporte Operativo Mensual',  d:'KPIs de envios, tiempos y tasas de entrega.', tag:'Mensual',    rows:ships.length, color:'#00C2CC'},
+    {ic:'ti-coin',         t:'Reporte Financiero Q2',       d:'Revenue, costos, margenes por ruta.',         tag:'Trimestral', rows:ships.length, color:'#2EC97E'},
+    {ic:'ti-shield-check', t:'Informe de Compliance',       d:'Estado regulatorio y obligaciones.',          tag:'Mensual',    rows:COMPLIANCE_DATA.length, color:'#E08A30'},
+    {ic:'ti-route',        t:'Analisis de Rutas',           d:'Performance, benchmarking y cuellos.',        tag:'Semanal',    rows:ships.length, color:'#4D85A8'},
+    {ic:'ti-brain',        t:'Informe Predictivo',          d:'Proyecciones y scoring de riesgo.',           tag:'Semanal',    rows:5, color:'#7C5CBF'},
+    {ic:'ti-users',        t:'Reporte por Cliente',         d:'Performance individual por cliente.',         tag:'Mensual',    rows:ships.length, color:'#00C2CC'}
+  ];
+
+  var cards = reports.map(function(r) {
+    return '<div style="display:flex;gap:12px;padding:13px 16px;background:var(--navy2);border:1px solid rgba(107,130,153,0.15);border-radius:10px;margin-bottom:9px">'
+      +'<div style="width:40px;height:40px;border-radius:9px;flex-shrink:0;background:'+r.color+'18;border:1px solid '+r.color+'30;display:flex;align-items:center;justify-content:center;color:'+r.color+';font-size:18px">'
+      +'<i class="ti '+r.ic+'"></i></div>'
+      +'<div style="flex:1;min-width:0">'
+      +'<div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px">'+r.t+'</div>'
+      +'<div style="font-size:10.5px;color:var(--muted);margin-bottom:8px">'+r.d+'</div>'
+      +'<div style="display:flex;align-items:center;gap:8px">'
+      +'<span style="font-size:9px;background:rgba(0,194,204,0.1);color:var(--cyan);padding:2px 7px;border-radius:4px">'+r.tag+'</span>'
+      +'<span style="font-size:9.5px;color:var(--muted2)">'+r.rows+' filas</span>'
+      +'</div></div>'
+      +'<div style="display:flex;gap:6px;align-items:center;flex-shrink:0">'
+      +'<button class="exp-btn e-pdf" data-action="pdf"><i class="ti ti-file-type-pdf"></i> PDF</button>'
+      +'<button class="exp-btn e-xl"  data-action="xl"><i class="ti ti-table"></i> Excel</button>'
+      +'<button class="exp-btn e-csv" data-action="csv"><i class="ti ti-file-spreadsheet"></i> CSV</button>'
+      +'</div></div>';
+  }).join('');
+
+  return '<div class="page-hdr"><div>'
+    +'<div class="page-title">Informes y Exportar</div>'
+    +'<div class="page-sub">'+ships.length+' envios &middot; $'+revenue.toLocaleString()+' revenue &middot; Descarga real</div>'
+    +'</div>'
+    +'<button class="btn btn-ghost" data-action="xl" style="font-size:11px"><i class="ti ti-table"></i> Exportar todo</button></div>'
+    +'<div style="background:var(--navy3);border:1px solid rgba(0,194,204,0.15);border-radius:9px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px">'
+    +'<i class="ti ti-info-circle" style="font-size:16px;color:var(--cyan);flex-shrink:0"></i>'
+    +'<div style="font-size:10.5px;color:var(--muted)"><strong style="color:var(--white2)">Excel y CSV</strong> generan archivos reales. <strong style="color:var(--white2)">PDF</strong> requiere backend.</div>'
+    +'</div>'+cards;
+}
+
+var _adminUsers = [
+  {id:1, name:'Carlos Montoya', email:'ceo@navicore.io',       role:'executive', active:true,  last:'Hoy'   },
+  {id:2, name:'Ana Rios',       email:'analyst@navicore.io',   role:'analyst',   active:true,  last:'Hoy'   },
+  {id:3, name:'Pedro Vargas',   email:'client@translogsa.com', role:'client',    active:true,  last:'Ayer'  },
+  {id:4, name:'Sofia Luna',     email:'analyst2@navicore.io',  role:'analyst',   active:true,  last:'3 Jun' },
+  {id:5, name:'Marco Reyes',    email:'ceo@aerocargo.com',     role:'executive', active:false, last:'1 Jun' }
+];
+
+function buildAdminPage() {
+  return '<div class="page-hdr"><div>'
+    +'<div class="page-title">Administracion</div>'
+    +'<div class="page-sub">Tenants &middot; Usuarios &middot; Roles &middot; Permisos</div>'
+    +'</div><button class="btn btn-primary" data-action="xl"><i class="ti ti-table"></i> Exportar usuarios</button></div>'
+    +kpiGrid([
+      {lbl:'Tenants',          val:'3',    cls:'c'},
+      {lbl:'Usuarios Activos', val:String(_adminUsers.filter(function(u){return u.active;}).length), cls:'g'},
+      {lbl:'Envios Totales',   val:String(SHIPS.length), cls:'c'},
+      {lbl:'Sin Leer',         val:String(unreadCount()), cls:'w'}
+    ])
+    +'<div class="admin-tabs">'
+    +'<button class="adm-tab active" data-admtab="users">Usuarios ('+_adminUsers.length+')</button>'
+    +'<button class="adm-tab" data-admtab="tenants">Tenants (3)</button>'
+    +'</div>'
+    +'<div id="adm-c">'+admUsersHTML()+'</div>';
+}
+
+function admUsersHTML() {
+  var rows = _adminUsers.map(function(u) {
+    return '<tr style="'+(u.active?'':'opacity:.6')+'">'
+      +'<td><div style="font-size:11.5px;font-weight:500">'+u.name+'</div>'
+      +'<div style="font-size:9.5px;color:var(--muted)">'+u.email+'</div></td>'
+      +'<td>'+rbadge(u.role)+'</td>'
+      +'<td style="font-size:10.5px">NAVICORE Demo</td>'
+      +'<td style="font-size:10px;color:var(--muted)">'+u.last+'</td>'
+      +'<td><span class="bdg '+(u.active?'b-ok':'b-dl')+'">'+(u.active?'Activo':'Inactivo')+'</span></td>'
+      +'<td><div style="display:flex;gap:4px">'
+      +'<button class="btn btn-ghost btn-sm" data-action="edit-user"><i class="ti ti-edit"></i></button>'
+      +(u.id!==1?'<button class="btn btn-sm '+(u.active?'btn-danger':'')+'" data-toguid="'+u.id+'">'+(u.active?'<i class="ti ti-user-off"></i>':'<i class="ti ti-user-check"></i>')+'</button>':'')
+      +'</div></td></tr>';
+  }).join('');
+  return '<div class="card">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
+    +'<div class="card-title" style="margin:0"><i class="ti ti-users"></i>Usuarios del sistema</div>'
+    +'<button class="btn btn-primary btn-sm" data-action="new-user"><i class="ti ti-user-plus"></i>Nuevo usuario</button>'
+    +'</div>'
+    +'<div id="nuf" style="display:none;margin-bottom:12px;padding:10px;background:var(--navy3);border-radius:8px;border:1px solid var(--b1)">'
+    +'<div style="font-size:9.5px;color:var(--cyan);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">NUEVO USUARIO</div>'
+    +'<div class="form-grid">'
+    +'<div class="form-field"><label>Nombre completo</label><input id="nu-n" placeholder="Ej. Maria Garcia"/></div>'
+    +'<div class="form-field"><label>Email</label><input id="nu-e" type="email" placeholder="maria@empresa.com"/></div>'
+    +'<div class="form-field"><label>Contrasena</label><input id="nu-p" type="password" placeholder="8+ caracteres"/></div>'
+    +'<div class="form-field"><label>Rol</label><select id="nu-r"><option value="client">Cliente</option><option value="analyst">Analista</option><option value="executive">C-Level</option></select></div>'
+    +'</div>'
+    +'<div style="display:flex;justify-content:flex-end;gap:6px">'
+    +'<button class="btn btn-ghost" data-action="cancel-user">Cancelar</button>'
+    +'<button class="btn btn-primary" data-action="create-user"><i class="ti ti-check"></i>Crear usuario</button>'
+    +'</div></div>'
+    +'<div class="scroll-wrap" style="max-height:260px"><table class="tbl"><thead><tr>'
+    +'<th>Usuario</th><th>Rol</th><th>Tenant</th><th>Ultimo acceso</th><th>Estado</th><th>Acciones</th>'
+    +'</tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+}
+
+function admTenantsHTML() {
+  var tenants = [
+    {name:'NAVICORE Demo',slug:'navicore',  plan:'enterprise',users:5,ships:8},
+    {name:'TransLog SA',  slug:'translogsa',plan:'pro',        users:2,ships:3},
+    {name:'AeroCargo PE', slug:'aerocargo', plan:'pro',        users:3,ships:5}
+  ];
+  var rows = tenants.map(function(t) {
+    return '<tr>'
+      +'<td><div style="font-size:11.5px;font-weight:500">'+t.name+'</div>'
+      +'<div style="font-size:9.5px;color:var(--muted);font-family:monospace">'+t.slug+'</div></td>'
+      +'<td><span class="bdg '+(t.plan==='enterprise'?'b-exec':'b-ana')+'">'+t.plan+'</span></td>'
+      +'<td style="color:var(--cyan);font-weight:500">'+t.users+'</td>'
+      +'<td>'+t.ships+'</td>'
+      +'<td><button class="btn btn-ghost btn-sm" data-action="edit-tenant"><i class="ti ti-edit"></i></button></td></tr>';
+  }).join('');
+  return '<div class="card">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
+    +'<div class="card-title" style="margin:0"><i class="ti ti-building"></i>Tenants registrados</div>'
+    +'<button class="btn btn-primary btn-sm" data-action="new-tenant"><i class="ti ti-plus"></i>Nuevo tenant</button>'
+    +'</div>'
+    +'<table class="tbl"><thead><tr><th>Empresa</th><th>Plan</th><th>Usuarios</th><th>Envios</th><th>Acciones</th></tr></thead>'
+    +'<tbody>'+rows+'</tbody></table></div>';
+}
+
+function buildAIPage() {
+  aiHistory = [];
+  var chips = [
+    {label:'Resumen ejecutivo',   msg:'Genera un briefing ejecutivo del estado actual de las operaciones logisticas.'},
+    {label:'Analisis de riesgo',  msg:'Analiza los riesgos operativos actuales y dame un plan de accion priorizado.'},
+    {label:'Optimizar rutas',     msg:'Identifica oportunidades de optimizacion en las rutas y estima ahorros en USD.'},
+    {label:'Brief compliance',    msg:'Dame un analisis del estado de compliance y acciones urgentes requeridas.'},
+    {label:'Proyeccion Q3',       msg:'Proyecta el volumen de envios y costos para el proximo trimestre.'}
+  ];
+  var chipsHtml = chips.map(function(c) {
+    return '<button class="ai-chip" data-msg="'+c.msg.replace(/"/g,'&quot;')+'">'+c.label+'</button>';
+  }).join('');
+  var rev = SHIPS.reduce(function(a,s){return a+s.cost;},0);
+  return '<div class="page-hdr"><div>'
+    +'<div class="page-title">Asistente AI</div>'
+    +'<div class="page-sub">Analisis logistico inteligente &middot; Powered by Claude Sonnet 4</div>'
+    +'</div></div>'
+    +'<div class="card" style="padding:14px">'
+    +'<div class="ai-chips">'+chipsHtml+'</div>'
+    +'<div class="ai-msgs" id="ai-msgs">'
+    +'<div style="text-align:center"><span style="background:rgba(107,130,153,.08);border:1px solid var(--b2);color:var(--muted);padding:6px 11px;border-radius:8px;font-size:10px;display:inline-block;line-height:1.5">'
+    +'Asistente NAVICORE AI &middot; '+SHIPS.length+' envios &middot; $'+rev.toLocaleString()+' costos &middot; Enter para enviar'
+    +'</span></div>'
+    +'</div>'
+    +'<div class="ai-input-bar">'
+    +'<textarea class="ai-input" id="ai-inp" placeholder="Escribe tu pregunta... (Enter envia, Shift+Enter nueva linea)" rows="2"></textarea>'
+    +'<button class="ai-send" id="ai-btn"><i class="ti ti-send"></i></button>'
+    +'</div></div>'
+    +'<div style="font-size:9px;color:var(--muted2);text-align:center;margin-top:6px">Responde con acceso al contexto de tu flota en tiempo real.</div>';
+}
+
+// ── AI SEND ───────────────────────────────────────────────────────────────
+async function sendAI(preset) {
+  var inp  = document.getElementById('ai-inp');
+  var msgs = document.getElementById('ai-msgs');
+  var btn  = document.getElementById('ai-btn');
+  if (!msgs || !btn) return;
+
+  var message = preset || (inp ? inp.value.trim() : '');
+  if (!message || aiLoading) return;
+
+  aiLoading = true;
+  if (inp) inp.value = '';
+  btn.disabled = true;
+
+  aiHistory.push({ role:'user', content:message });
+
+  var userDiv = document.createElement('div');
+  userDiv.style.display = 'flex';
+  userDiv.style.justifyContent = 'flex-end';
+  userDiv.innerHTML = '<div class="ai-msg-user">'+message+'</div>';
+  msgs.appendChild(userDiv);
+
+  var loadDiv = document.createElement('div');
+  loadDiv.id = 'ai-loading';
+  loadDiv.style.cssText = 'display:flex;align-items:flex-start;gap:6px';
+  loadDiv.innerHTML = '<div style="width:26px;height:26px;background:rgba(124,92,191,.2);border:1px solid rgba(124,92,191,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">&#129302;</div>'
+    +'<div class="ai-msg-bot" style="color:var(--muted);font-size:10.5px">Analizando datos de flota<span class="ldots"></span></div>';
+  msgs.appendChild(loadDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  var ctx = 'Flota: '+SHIPS.length+' envios. '
+    +'Revenue: $'+SHIPS.reduce(function(a,s){return a+s.cost;},0).toLocaleString()+'. '
+    +'Retrasados: '+SHIPS.filter(function(s){return s.status==='delay';}).length+'. '
+    +'On-Time: '+SHIPS.filter(function(s){return s.status==='ok';}).length+'. '
+    +'Alertas: '+ALERTS.filter(function(a){return !a.read;}).length+' sin leer. '
+    +'Compliance: '+COMPLIANCE_DATA.filter(function(c){return c.status==='ok';}).length+'/'+COMPLIANCE_DATA.length+' conformes.';
+
+  try {
+    var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:900,
+        system:'Eres el asistente de inteligencia logistica de NAVICORE. Responde en espanol. Se preciso y accionable. Contexto: '+ctx,
+        messages:aiHistory.slice(-8)
+      })
+    });
+    var data  = await resp.json();
+    var reply = (data.content && data.content[0] && data.content[0].text) || 'Sin respuesta.';
+    aiHistory.push({ role:'assistant', content:reply });
+
+    var ld = document.getElementById('ai-loading');
+    if (ld) ld.remove();
+
+    var botDiv = document.createElement('div');
+    botDiv.style.cssText = 'display:flex;align-items:flex-start;gap:6px';
+    botDiv.innerHTML = '<div style="width:26px;height:26px;background:rgba(124,92,191,.2);border:1px solid rgba(124,92,191,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:2px">&#129302;</div>'
+      +'<div class="ai-msg-bot">'+reply.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')+'</div>';
+    msgs.appendChild(botDiv);
+  } catch(e) {
+    var ld2 = document.getElementById('ai-loading');
+    if (ld2) ld2.remove();
+    var errDiv = document.createElement('div');
+    errDiv.innerHTML = '<div class="ai-msg-bot" style="color:var(--warn)">&#9888; Sin conexion a internet o el servidor no responde.</div>';
+    msgs.appendChild(errDiv);
+  }
+
+  aiLoading = false;
+  btn.disabled = false;
+  if (msgs) msgs.scrollTop = msgs.scrollHeight;
+}
+
+// ── CHARTS ────────────────────────────────────────────────────────────────
+function initCharts(pid) {
+  if (typeof Chart === 'undefined') return;
+  var gc = 'rgba(0,194,204,0.07)', tc = '#6B8299';
+  var base = {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ display:false } },
+    scales:{
+      x:{ grid:{color:gc}, ticks:{color:tc,font:{size:9}} },
+      y:{ grid:{color:gc}, ticks:{color:tc,font:{size:9}} }
+    }
+  };
+
+  var sS = (activeMode==='all'||activeMode==='sea')  ? 1 : 0;
+  var lS = (activeMode==='all'||activeMode==='land') ? 1 : 0;
+  var aS = (activeMode==='all'||activeMode==='air')  ? 1 : 0;
+
+  if (pid==='dashboard' && role==='executive') {
+    var e1 = document.getElementById('ch-vol');
+    if (e1) charts.v = new Chart(e1, {type:'bar', data:{
+      labels:['E','F','M','A','M','J'],
+      datasets:[
+        {label:'Mar',    data:[42,38,45,50,48,54].map(function(v){return Math.round(v*sS);}), backgroundColor:'#3A6B8A'},
+        {label:'Tierra', data:[28,31,29,33,35,38].map(function(v){return Math.round(v*lS);}), backgroundColor:'#2EC97E'},
+        {label:'Aire',   data:[15,18,20,22,19,21].map(function(v){return Math.round(v*aS);}), backgroundColor:'#00C2CC'}
+      ]}, options:base});
+
+    var e2 = document.getElementById('ch-ot');
+    if (e2) {
+      var oLbls = activeMode==='all' ? ['Maritimo','Terrestre','Aereo'] : [MODE_LBL[activeMode]];
+      var oOT   = activeMode==='all' ? [88,84,92] : [{sea:88,land:84,air:92}[activeMode]];
+      var oDL   = activeMode==='all' ? [12,16,8]  : [{sea:12,land:16,air:8 }[activeMode]];
+      var st = JSON.parse(JSON.stringify(base));
+      st.scales.x.stacked = true; st.scales.y.stacked = true; st.scales.y.max = 100;
+      charts.o = new Chart(e2, {type:'bar', data:{
+        labels:oLbls,
+        datasets:[
+          {label:'On-Time',   data:oOT instanceof Array?oOT:[oOT], backgroundColor:'#00C2CC'},
+          {label:'Retrasado', data:oDL instanceof Array?oDL:[oDL], backgroundColor:'rgba(224,85,85,0.5)'}
+        ]}, options:st});
+    }
+
+    var e3 = document.getElementById('ch-rev');
+    if (e3) charts.r = new Chart(e3, {type:'line', data:{
+      labels:['Ene','Feb','Mar','Abr','May','Jun'],
+      datasets:[
+        {data:[620,580,710,750,720,810].map(function(v){return Math.round(v*sS);}), borderColor:'#3A6B8A',tension:.4,fill:true,backgroundColor:'rgba(58,107,138,0.08)',pointRadius:2},
+        {data:[280,310,290,330,350,380].map(function(v){return Math.round(v*lS);}), borderColor:'#2EC97E',tension:.4,fill:true,backgroundColor:'rgba(46,201,126,0.05)',pointRadius:2},
+        {data:[190,210,230,260,220,250].map(function(v){return Math.round(v*aS);}), borderColor:'#00C2CC',tension:.4,fill:true,backgroundColor:'rgba(0,194,204,0.05)',pointRadius:2}
+      ]}, options:base});
+  }
+
+  if (pid==='dashboard' && role==='analyst') {
+    var ea = document.getElementById('ch-dist');
+    if (ea) {
+      var distData, distLabels, distColors;
+      if (activeMode==='all') {
+        distLabels=['Mar','Tierra','Aire']; distData=[54,28,18]; distColors=['#3A6B8A','#2EC97E','#00C2CC'];
+      } else {
+        var fs=filteredShips();
+        distLabels=['On-Time','Transito','Retrasado','Pendiente'];
+        distData=[fs.filter(function(s){return s.status==='ok';}).length,fs.filter(function(s){return s.status==='transit';}).length,fs.filter(function(s){return s.status==='delay';}).length,fs.filter(function(s){return s.status==='pend';}).length];
+        distColors=['#2EC97E','#00C2CC','#E05555','#E08A30'];
+      }
+      charts.d = new Chart(ea, {type:'doughnut', data:{
+        labels:distLabels,
+        datasets:[{data:distData,backgroundColor:distColors,borderWidth:0}]},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'68%'}});
+    }
+  }
+
+  if (pid==='financials') {
+    var ef = document.getElementById('ch-fin');
+    if (ef) {
+      var scale = sS*0.55+lS*0.25+aS*0.20;
+      charts.f = new Chart(ef, {type:'bar', data:{
+        labels:['Ene','Feb','Mar','Abr','May','Jun'],
+        datasets:[
+          {label:'Revenue',data:[380,410,440,420,480,510].map(function(v){return Math.round(v*scale);}),backgroundColor:'#00C2CC'},
+          {label:'Costo',  data:[260,280,295,290,320,340].map(function(v){return Math.round(v*scale);}),backgroundColor:'rgba(58,107,138,0.6)'}
+        ]}, options:base});
+    }
+  }
+
+  if (pid==='predictive') {
+    var ep = document.getElementById('ch-pred');
+    if (ep) {
+      var bv = filteredShips().length || 8;
+      charts.p = new Chart(ep, {type:'line', data:{
+        labels:['Jun','Jul','Ago','Sep'],
+        datasets:[
+          {data:[bv,null,null,null],borderColor:'#3A6B8A',pointRadius:5},
+          {data:[bv,Math.round(bv*1.1),Math.round(bv*1.21),Math.round(bv*1.33)],borderColor:'#00C2CC',borderDash:[5,4],pointRadius:4,backgroundColor:'rgba(0,194,204,0.07)',fill:true,tension:.4}
+        ]}, options:base});
+    }
+  }
+}
+
+// ── EVENT WIRING — one delegated listener per concern ─────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+
+  // 1. Load profile FIRST — populates USERS_REF synchronously
+  loadProfile(ACTIVE_PROFILE);
+
+  // 2. Login inputs
+  document.getElementById('btn-login').addEventListener('click', doLogin);
+  document.getElementById('li-email').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLogin();
+  });
+  document.getElementById('li-pass').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  // 3. Demo pills — read profile users at click time (always fresh)
+  document.getElementById('dp-exec').addEventListener('click', function() {
+    var pu = window._pu || {};
+    if (pu.exec) quickLogin(pu.exec.email, pu.exec.pass);
+  });
+  document.getElementById('dp-analyst').addEventListener('click', function() {
+    var pu = window._pu || {};
+    if (pu.analyst) quickLogin(pu.analyst.email, pu.analyst.pass);
+  });
+  document.getElementById('dp-client').addEventListener('click', function() {
+    var pu = window._pu || {};
+    var u  = pu.client || pu.analyst;
+    if (u) quickLogin(u.email, u.pass);
+  });
+
+  // 4. Logout
+  document.getElementById('btn-logout').addEventListener('click', doLogout);
+
+  // 5. Notifications
+  document.getElementById('notif-btn').addEventListener('click', toggleNotif);
+  document.getElementById('mark-all-btn').addEventListener('click', markAllRead);
+  document.getElementById('close-notif-btn').addEventListener('click', function() {
+    if (notifOpen) { notifOpen = true; toggleNotif(); }
+  });
+
+  // 6. Close notif on outside click
+  document.addEventListener('click', function(e) {
+    var panel = document.getElementById('notif-panel');
+    var bell  = document.getElementById('notif-btn');
+    if (notifOpen && panel && bell && !panel.contains(e.target) && !bell.contains(e.target)) {
+      notifOpen = true;
+      toggleNotif();
+    }
+  });
+
+  // 7. Delegated: mode tabs
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-mode]');
+    if (btn) setMode(btn.getAttribute('data-mode'));
+  });
+
+  // 8. Delegated: nav items
+  document.addEventListener('click', function(e) {
+    var item = e.target.closest('.nav-item[data-page]');
+    if (item) goTo(item.getAttribute('data-page'));
+  });
+
+  // 9. Delegated: notif items
+  document.addEventListener('click', function(e) {
+    var item = e.target.closest('[data-nid]');
+    if (item) readNotif(parseInt(item.getAttribute('data-nid')));
+  });
+
+  // 10. Delegated: admin tabs
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-admtab]');
+    if (!btn) return;
+    var t = btn.getAttribute('data-admtab');
+    document.querySelectorAll('.adm-tab').forEach(function(el) { el.classList.remove('active'); });
+    btn.classList.add('active');
+    var c = document.getElementById('adm-c');
+    if (c) c.innerHTML = t === 'users' ? admUsersHTML() : admTenantsHTML();
+  });
+
+  // 11. Delegated: admin user toggle
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-toguid]');
+    if (!btn) return;
+    var id = parseInt(btn.getAttribute('data-toguid'));
+    var u  = _adminUsers.find(function(x) { return x.id === id; });
+    if (!u) return;
+    u.active = !u.active;
+    showToast(u.name + (u.active ? ' activado' : ' desactivado'));
+    var c = document.getElementById('adm-c');
+    if (c) c.innerHTML = admUsersHTML();
+  });
+
+  // 12. Delegated: data-action buttons (export, admin forms, doc buttons)
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    var action = btn.getAttribute('data-action');
+    if (action === 'xl')          exportExcel();
+    else if (action === 'csv')    exportCSV();
+    else if (action === 'pdf')    showToast('PDF requiere backend PostgreSQL conectado');
+    else if (action === 'new-user')    { var f=document.getElementById('nuf'); if(f) f.style.display='block'; }
+    else if (action === 'cancel-user') { var f=document.getElementById('nuf'); if(f) f.style.display='none';  }
+    else if (action === 'create-user') createUser();
+    else if (action === 'new-tenant')  showToast('Nuevo tenant: disponible con backend');
+    else if (action === 'edit-user')   showToast('Edicion de usuario: disponible con backend');
+    else if (action === 'edit-tenant') showToast('Edicion de tenant: disponible con backend');
+    else if (action === 'doc-view')    showToast('Vista previa disponible con backend conectado');
+    else if (action === 'doc-edit')    showToast('Editor disponible con ONLYOFFICE Document Server');
+    else if (action === 'doc-dl')      showToast('Descargando...');
+  });
+
+  // 13. AI: send on button click
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('#ai-btn')) sendAI();
+  });
+
+  // 14. AI: chips
+  document.addEventListener('click', function(e) {
+    var chip = e.target.closest('.ai-chip[data-msg]');
+    if (chip) sendAI(chip.getAttribute('data-msg'));
+  });
+
+  // 15. AI: Enter to send
+  document.addEventListener('keydown', function(e) {
+    var inp = document.getElementById('ai-inp');
+    if (inp && e.target === inp && e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendAI();
+    }
+  });
+
+  // 16. Live notification
+  setTimeout(addLiveNotif, 8000);
+
+  // 17. Onboarding file input (delegated — rendered dynamically)
+  document.addEventListener('change', function(e) {
+    if (e.target && e.target.id === 'obd-file-inp') {
+      var file = e.target.files[0];
+      if (file) obdProcessFile(file);
+    }
+  });
+
+  console.log('[NAVICORE] Ready. Profile:', ACTIVE_PROFILE, '| Users:', Object.keys(USERS_REF).join(', '));
+});
+
+// ── ADMIN HELPERS ─────────────────────────────────────────────────────────
+function createUser() {
+  var nameEl  = document.getElementById('nu-n');
+  var emailEl = document.getElementById('nu-e');
+  var roleEl  = document.getElementById('nu-r');
+  var name  = nameEl  ? nameEl.value.trim()  : '';
+  var email = emailEl ? emailEl.value.trim() : '';
+  if (!name || !email) { showToast('Nombre y email son requeridos'); return; }
+  _adminUsers.push({ id:_adminUsers.length+1, name:name, email:email,
+    role:roleEl ? roleEl.value : 'client', active:true, last:'Ahora' });
+  showToast('Usuario ' + name + ' creado');
+  var c = document.getElementById('adm-c');
+  if (c) c.innerHTML = admUsersHTML();
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  ONBOARDING — Importar Datos
+//  Soporta CSV y Excel (.xlsx .xls)
+//  Mapea columnas automáticamente, previsualiza, e importa a SHIPS[]
+// ══════════════════════════════════════════════════════════════════════════
+
+var _obd = {
+  step:    1,          // 1=upload 2=map 3=preview 4=done
+  raw:     [],         // parsed rows from file
+  headers: [],         // column headers from file
+  mapping: {},         // { appField: fileColumn }
+  preview: [],         // first 5 rows after mapping
+  fileName:'',
+  totalRows: 0,
+};
+
+// Fields NAVICORE needs — label shown to user, internal key, required
+var OBD_FIELDS = [
+  { key:'id',     label:'ID / Referencia',   req:true,  hint:'Ej: NCM-2847, REF-001' },
+  { key:'orig',   label:'Origen',            req:true,  hint:'Ciudad o puerto de origen' },
+  { key:'dest',   label:'Destino',           req:true,  hint:'Ciudad o puerto de destino' },
+  { key:'mode',   label:'Modo de transporte',req:true,  hint:'sea / land / air o Maritimo / Terrestre / Aereo' },
+  { key:'cargo',  label:'Descripcion carga', req:false, hint:'Tipo o descripcion de la carga' },
+  { key:'weight', label:'Peso / Volumen',    req:false, hint:'Ej: 500 kg, 20 t' },
+  { key:'cost',   label:'Costo (USD)',       req:false, hint:'Solo numeros, sin simbolos' },
+  { key:'eta',    label:'ETA / Fecha llegada',req:false,hint:'Ej: 15 Jun, 2025-06-15' },
+  { key:'client', label:'Cliente',           req:false, hint:'Nombre del cliente o shipper' },
+  { key:'status', label:'Estado',            req:false, hint:'ok / delay / transit / pend' },
+];
+
+// Auto-map heuristic — match header keywords to app fields
+var OBD_KEYWORDS = {
+  id:     ['id','ref','referencia','folio','orden','shipment','hawb','mawb','bl','awb','cmr','numero'],
+  orig:   ['orig','origen','origin','from','departure','salida','procedencia','pol'],
+  dest:   ['dest','destino','destination','to','arrival','llegada','pod','consignee city'],
+  mode:   ['mode','modo','tipo','type','transport','modalidad','via'],
+  cargo:  ['cargo','carga','mercanc','descripcion','goods','product','commodity'],
+  weight: ['peso','weight','kg','ton','volumen','cbm','gross'],
+  cost:   ['costo','cost','flete','freight','valor','amount','usd','precio','rate'],
+  eta:    ['eta','fecha','date','llegada','arrival','delivery','entrega','estimado'],
+  client: ['cliente','client','shipper','consignee','empresa','company','customer'],
+  status: ['estado','status','estatus','state'],
+};
+
+function autoMap(headers) {
+  var mapping = {};
+  headers.forEach(function(h) {
+    var hl = h.toLowerCase().trim();
+    Object.keys(OBD_KEYWORDS).forEach(function(field) {
+      if (mapping[field]) return;  // already mapped
+      OBD_KEYWORDS[field].forEach(function(kw) {
+        if (hl.indexOf(kw) >= 0 && !mapping[field]) {
+          mapping[field] = h;
+        }
+      });
+    });
+  });
+  return mapping;
+}
+
+function normalizeMode(val) {
+  if (!val) return 'sea';
+  var v = String(val).toLowerCase().trim();
+  if (v==='sea'||v==='mar'||v==='maritimo'||v==='ocean'||v==='maritime') return 'sea';
+  if (v==='land'||v==='tierra'||v==='terrestre'||v==='road'||v==='truck'||v==='ground') return 'land';
+  if (v==='air'||v==='aire'||v==='aereo'||v==='aero'||v==='avion'||v==='air freight') return 'air';
+  return 'sea';
+}
+
+function normalizeStatus(val) {
+  if (!val) return 'transit';
+  var v = String(val).toLowerCase().trim();
+  if (v==='ok'||v==='entregado'||v==='delivered'||v==='completo') return 'ok';
+  if (v==='delay'||v==='retrasado'||v==='delayed'||v==='retraso') return 'delay';
+  if (v==='pend'||v==='pendiente'||v==='pending'||v==='nuevo') return 'pend';
+  return 'transit';
+}
+
+function applyMapping(rows, mapping) {
+  return rows.map(function(row, i) {
+    var get = function(field) {
+      var col = mapping[field];
+      return col ? (row[col] || '') : '';
+    };
+    var cost = parseFloat(String(get('cost')).replace(/[^0-9.]/g,'')) || 0;
+    return {
+      id:     get('id')     || ('IMP-' + String(i+1).padStart(4,'0')),
+      orig:   get('orig')   || 'Origen no especificado',
+      dest:   get('dest')   || 'Destino no especificado',
+      mode:   normalizeMode(get('mode')),
+      cargo:  get('cargo')  || 'Carga importada',
+      weight: get('weight') || '',
+      cost:   cost,
+      eta:    get('eta')    || 'Por confirmar',
+      client: get('client') || 'Cliente',
+      status: normalizeStatus(get('status')),
+      prog:   cost > 0 ? 50 : 30,
+    };
+  });
+}
+
+// ── RENDER STEPS ────────────────────────────────────────────────────────────
+
+function buildOnboardingPage() {
+  _obd.step = 1; _obd.raw = []; _obd.headers = []; _obd.mapping = {};
+  _obd.preview = []; _obd.fileName = ''; _obd.totalRows = 0;
+  return renderOnboarding();
+}
+
+function renderOnboarding() {
+  var stepLabels = ['Subir archivo','Mapear columnas','Previsualizar','Importado'];
+  var stepsHtml = stepLabels.map(function(lb, i) {
+    var n = i+1;
+    var active  = _obd.step === n;
+    var done    = _obd.step > n;
+    var dotBg   = done ? 'var(--success)' : active ? 'var(--cyan)' : 'rgba(107,130,153,.2)';
+    var dotCol  = done||active ? (done?'#fff':'var(--navy)') : 'var(--muted)';
+    var lbCol   = active ? 'var(--cyan)' : done ? 'var(--success)' : 'var(--muted)';
+    var line    = n<4 ? '<div style="flex:1;height:1.5px;background:'+(done?'var(--success)':'rgba(107,130,153,.15)')+'"></div>' : '';
+    return '<div style="display:flex;flex-direction:column;align-items:center;flex:'+(n<4?'1':'0 0 auto')+'">'
+      +'<div style="display:flex;align-items:center;width:100%">'
+      +'<div style="width:26px;height:26px;border-radius:50%;background:'+dotBg+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:'+dotCol+';flex-shrink:0">'
+      +(done?'<i class="ti ti-check"></i>':String(n))+'</div>'
+      +line+'</div>'
+      +'<span style="font-size:9px;margin-top:4px;white-space:nowrap;color:'+lbCol+'">'+lb+'</span></div>';
+  }).join('');
+
+  var bodyHtml;
+  if      (_obd.step === 1) bodyHtml = renderStep1();
+  else if (_obd.step === 2) bodyHtml = renderStep2();
+  else if (_obd.step === 3) bodyHtml = renderStep3();
+  else                      bodyHtml = renderStep4();
+
+  return '<div class="page-hdr"><div>'
+    +'<div class="page-title">Importar Datos</div>'
+    +'<div class="page-sub">Sube tus envios desde Excel o CSV &middot; Se importan a tu cuenta en segundos</div>'
+    +'</div></div>'
+    +'<div class="card" style="margin-bottom:10px">'
+    +'<div style="display:flex;align-items:flex-start;gap:0;padding:4px 0 8px">'+stepsHtml+'</div>'
+    +'</div>'
+    +'<div id="obd-body">'+bodyHtml+'</div>';
+}
+
+function renderStep1() {
+  return '<div class="card">'
+    // Drop zone
+    +'<div id="obd-drop" style="border:2px dashed rgba(0,194,204,0.25);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(0,194,204,0.02)" '
+    +'ondragover="event.preventDefault();this.style.borderColor=\'var(--cyan)\';this.style.background=\'rgba(0,194,204,0.06)\'" '
+    +'ondragleave="this.style.borderColor=\'rgba(0,194,204,0.25)\';this.style.background=\'rgba(0,194,204,0.02)\'" '
+    +'ondrop="obdHandleDrop(event)">'
+    +'<i class="ti ti-upload" style="font-size:38px;color:var(--cyan);opacity:.6;display:block;margin-bottom:10px"></i>'
+    +'<div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:5px">Arrastra tu archivo aqui</div>'
+    +'<div style="font-size:11.5px;color:var(--muted);margin-bottom:16px">o haz click para seleccionar</div>'
+    +'<button class="btn btn-primary" onclick="document.getElementById(\'obd-file-inp\').click()" style="font-size:12px;padding:8px 20px">'
+    +'<i class="ti ti-file-spreadsheet"></i> Seleccionar Excel o CSV</button>'
+    +'<input type="file" id="obd-file-inp" accept=".xlsx,.xls,.csv" style="display:none">'
+    +'<div style="font-size:10px;color:var(--muted2);margin-top:12px">Formatos soportados: Excel (.xlsx, .xls) &middot; CSV con separador coma o punto y coma</div>'
+    +'</div>'
+    // Template download hint
+    +'<div style="margin-top:12px;padding:11px 14px;background:var(--navy3);border-radius:9px;border:1px solid rgba(0,194,204,0.1);display:flex;align-items:center;gap:10px">'
+    +'<i class="ti ti-bulb" style="color:var(--warn);font-size:16px;flex-shrink:0"></i>'
+    +'<div style="font-size:10.5px;color:var(--muted)">'
+    +'<strong style="color:var(--white2)">¿Primera vez?</strong> Descarga la plantilla de ejemplo, '
+    +'rellena con tus datos y vuelve a subir.'
+    +'</div>'
+    +'<button class="btn btn-ghost btn-sm" onclick="obdDownloadTemplate()" style="flex-shrink:0;margin-left:auto">'
+    +'<i class="ti ti-download"></i> Plantilla</button>'
+    +'</div>'
+    +'</div>'
+    // Format guide
+    +'<div class="card" style="margin-top:0">'
+    +'<div class="card-title"><i class="ti ti-info-circle"></i>Columnas reconocidas automaticamente</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:7px">'
+    +OBD_FIELDS.map(function(f) {
+      return '<div style="background:var(--navy3);border-radius:7px;padding:8px 10px;border:1px solid rgba(107,130,153,.1)">'
+        +'<div style="font-size:10.5px;font-weight:600;color:var(--white2);margin-bottom:2px">'
+        +f.label+(f.req?' <span style="color:var(--danger);font-size:9px">*requerido</span>':'')+'</div>'
+        +'<div style="font-size:9.5px;color:var(--muted)">'+f.hint+'</div></div>';
+    }).join('')
+    +'</div></div>';
+}
+
+function renderStep2() {
+  var selStyle = 'background:var(--navy);border:1px solid rgba(107,130,153,.2);border-radius:6px;padding:5px 8px;color:var(--white);font-size:11px;font-family:\'DM Sans\',sans-serif;outline:none;width:100%';
+  var rows = OBD_FIELDS.map(function(f) {
+    var options = '<option value="">-- No mapear --</option>'
+      + _obd.headers.map(function(h) {
+          var sel = _obd.mapping[f.key] === h ? ' selected' : '';
+          return '<option value="'+h.replace(/"/g,'&quot;')+'"'+sel+'>'+h+'</option>';
+        }).join('');
+    var mapped = _obd.mapping[f.key];
+    var indicator = mapped
+      ? '<span style="color:var(--success);font-size:11px"><i class="ti ti-circle-check"></i> '+mapped+'</span>'
+      : (f.req ? '<span style="color:var(--warn);font-size:10px">Requerido</span>' : '<span style="color:var(--muted2);font-size:10px">Opcional</span>');
+    return '<tr>'
+      +'<td style="font-size:11px;padding:7px 9px;color:var(--white2)">'
+      +f.label+(f.req?'<span style="color:var(--danger)">*</span>':'')+'</td>'
+      +'<td style="padding:5px 9px">'
+      +'<select style="'+selStyle+'" data-obdfield="'+f.key+'" onchange="obdMapChange(this)">'
+      +options+'</select></td>'
+      +'<td style="padding:7px 9px">'+indicator+'</td></tr>';
+  }).join('');
+
+  var mapped   = Object.keys(_obd.mapping).length;
+  var reqMapped = OBD_FIELDS.filter(function(f){return f.req && _obd.mapping[f.key];}).length;
+  var reqTotal  = OBD_FIELDS.filter(function(f){return f.req;}).length;
+  var canNext   = reqMapped >= reqTotal;
+
+  return '<div class="card">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px">'
+    +'<div>'
+    +'<div style="font-size:13px;font-weight:600;color:var(--white)">Mapear columnas</div>'
+    +'<div style="font-size:10.5px;color:var(--muted);margin-top:2px">Archivo: <span style="color:var(--cyan)">'+_obd.fileName+'</span> &middot; '+_obd.totalRows+' filas detectadas &middot; '+mapped+'/'+OBD_FIELDS.length+' columnas mapeadas</div>'
+    +'</div>'
+    +'<div style="display:flex;gap:6px">'
+    +'<button class="btn btn-ghost" onclick="obdBack()"><i class="ti ti-arrow-left"></i> Atras</button>'
+    +'<button class="btn btn-primary" onclick="obdToPreview()" '+(canNext?'':'disabled style="opacity:.4"')+'>'
+    +'Previsualizar <i class="ti ti-arrow-right"></i></button>'
+    +'</div></div>'
+    +(canNext?'':
+      '<div style="padding:8px 12px;background:rgba(224,138,48,.08);border-radius:7px;border-left:2px solid var(--warn);font-size:10.5px;color:var(--warn);margin-bottom:10px">'
+      +'Mapea al menos los campos requeridos (*) para continuar.</div>')
+    +'<table class="tbl"><thead><tr><th>Campo NAVICORE</th><th>Columna de tu archivo</th><th>Estado</th></tr></thead>'
+    +'<tbody>'+rows+'</tbody></table>'
+    +'</div>';
+}
+
+function renderStep3() {
+  var preview = _obd.preview;
+  var modeLabel = { sea:'Maritimo', land:'Terrestre', air:'Aereo' };
+  var modeColor = { sea:'var(--slate2)', land:'var(--success)', air:'var(--cyan)' };
+
+  var trows = preview.map(function(s) {
+    var mc = modeColor[s.mode] || 'var(--muted)';
+    var ml = modeLabel[s.mode] || s.mode;
+    return '<tr>'
+      +'<td style="font-family:monospace;font-size:10px;color:var(--cyan)">'+s.id+'</td>'
+      +'<td style="font-size:10px">'+s.orig+'</td>'
+      +'<td style="font-size:10px">'+s.dest+'</td>'
+      +'<td><span class="bdg" style="background:'+mc+'22;color:'+mc+'">'+ml+'</span></td>'
+      +'<td style="font-size:10px">'+s.cargo+'</td>'
+      +'<td style="font-size:10px">'+s.eta+'</td>'
+      +'<td>'+sbadge(s.status)+'</td>'
+      +'<td style="font-size:10px">'+( s.cost>0 ? '$'+s.cost.toLocaleString() : '—' )+'</td>'
+      +'</tr>';
+  }).join('');
+
+  return '<div class="card">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px">'
+    +'<div>'
+    +'<div style="font-size:13px;font-weight:600;color:var(--white)">Previsualizar importacion</div>'
+    +'<div style="font-size:10.5px;color:var(--muted);margin-top:2px">Mostrando primeras '+preview.length+' filas de <strong style="color:var(--cyan)">'+_obd.totalRows+'</strong> envios a importar</div>'
+    +'</div>'
+    +'<div style="display:flex;gap:6px">'
+    +'<button class="btn btn-ghost" onclick="obdBack()"><i class="ti ti-arrow-left"></i> Atras</button>'
+    +'<button class="btn btn-primary" onclick="obdDoImport()">'
+    +'<i class="ti ti-database-import"></i> Importar '+_obd.totalRows+' envios</button>'
+    +'</div></div>'
+    +'<div style="background:rgba(46,201,126,.06);border:1px solid rgba(46,201,126,.2);border-radius:8px;padding:8px 12px;font-size:10.5px;color:var(--success);margin-bottom:10px">'
+    +'<i class="ti ti-shield-check"></i> Estos envios se agregaran a tu cuenta. '
+    +'Los datos existentes no se eliminaran. Puedes deshacer desde Admin.</div>'
+    +'<div style="overflow-x:auto"><table class="tbl" style="min-width:700px"><thead><tr>'
+    +'<th>ID</th><th>Origen</th><th>Destino</th><th>Modo</th><th>Carga</th><th>ETA</th><th>Estado</th><th>Costo</th>'
+    +'</tr></thead><tbody>'+trows+'</tbody></table></div>'
+    +'</div>';
+}
+
+function renderStep4() {
+  var total = _obd.totalRows;
+  var byMode = { sea:0, land:0, air:0 };
+  _obd.preview.forEach(function(s) { if (byMode[s.mode]!==undefined) byMode[s.mode]++; });
+  // Estimate from total
+  var ratio = total > 0 ? total / Math.max(_obd.preview.length,1) : 1;
+  Object.keys(byMode).forEach(function(k) { byMode[k] = Math.round(byMode[k]*ratio); });
+
+  return '<div class="card" style="text-align:center;padding:40px 20px">'
+    +'<div style="width:60px;height:60px;border-radius:50%;background:rgba(46,201,126,.15);border:2px solid var(--success);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:26px;color:var(--success)">'
+    +'<i class="ti ti-circle-check"></i></div>'
+    +'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:26px;letter-spacing:2px;color:var(--white);margin-bottom:6px">'
+    +total+' ENVIOS IMPORTADOS</div>'
+    +'<div style="font-size:11.5px;color:var(--muted);margin-bottom:20px">'
+    +'Desde: <span style="color:var(--cyan)">'+_obd.fileName+'</span></div>'
+    +'<div style="display:flex;justify-content:center;gap:10px;margin-bottom:24px">'
+    +['sea','land','air'].map(function(m) {
+      var labels = {sea:'Maritimos',land:'Terrestres',air:'Aereos'};
+      var colors = {sea:'var(--slate2)',land:'var(--success)',air:'var(--cyan)'};
+      return '<div style="background:var(--navy3);border:1px solid rgba(107,130,153,.15);border-radius:9px;padding:10px 18px;text-align:center">'
+        +'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:22px;color:'+colors[m]+'">'+byMode[m]+'</div>'
+        +'<div style="font-size:9.5px;color:var(--muted)">'+labels[m]+'</div></div>';
+    }).join('')
+    +'</div>'
+    +'<div style="display:flex;gap:8px;justify-content:center">'
+    +'<button class="btn btn-ghost" onclick="obdReset()">'
+    +'<i class="ti ti-upload"></i> Importar otro archivo</button>'
+    +'<button class="btn btn-primary" onclick="goTo(\'tracking\')">'
+    +'<i class="ti ti-radar"></i> Ver en Trazabilidad</button>'
+    +'</div>'
+    +'</div>';
+}
+
+// ── HANDLERS ────────────────────────────────────────────────────────────────
+
+function obdHandleDrop(e) {
+  e.preventDefault();
+  var file = e.dataTransfer.files[0];
+  if (file) obdProcessFile(file);
+}
+
+function obdProcessFile(file) {
+  _obd.fileName = file.name;
+  var ext = file.name.split('.').pop().toLowerCase();
+
+  if (ext === 'csv') {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var text = e.target.result;
+      // Detect separator
+      var sep = text.indexOf(';') > text.indexOf(',') && text.indexOf(';') < 200 ? ';' : ',';
+      var lines = text.trim().split('\n').filter(function(l) { return l.trim(); });
+      if (lines.length < 2) { showToast('El archivo CSV parece estar vacio'); return; }
+      var headers = lines[0].split(sep).map(function(h) { return h.replace(/^"|"$/g,'').trim(); });
+      var rows = lines.slice(1).map(function(line) {
+        var vals = line.split(sep).map(function(v) { return v.replace(/^"|"$/g,'').trim(); });
+        var obj = {};
+        headers.forEach(function(h, i) { obj[h] = vals[i] || ''; });
+        return obj;
+      });
+      _obd.headers   = headers;
+      _obd.raw       = rows;
+      _obd.totalRows = rows.length;
+      _obd.mapping   = autoMap(headers);
+      _obd.step      = 2;
+      document.getElementById('obd-body').innerHTML = renderStep2();
+    };
+    reader.readAsText(file, 'UTF-8');
+
+  } else if (ext === 'xlsx' || ext === 'xls') {
+    if (typeof XLSX === 'undefined') { showToast('Libreria Excel cargando, intenta en 2 segundos'); return; }
+    var reader2 = new FileReader();
+    reader2.onload = function(e) {
+      try {
+        var wb   = XLSX.read(e.target.result, { type:'binary' });
+        var ws   = wb.Sheets[wb.SheetNames[0]];
+        var data = XLSX.utils.sheet_to_json(ws, { defval:'' });
+        if (!data.length) { showToast('La hoja Excel parece estar vacia'); return; }
+        var headers = Object.keys(data[0]);
+        _obd.headers   = headers;
+        _obd.raw       = data;
+        _obd.totalRows = data.length;
+        _obd.mapping   = autoMap(headers);
+        _obd.step      = 2;
+        document.getElementById('obd-body').innerHTML = renderStep2();
+      } catch(err) {
+        showToast('Error leyendo Excel: ' + err.message);
+      }
+    };
+    reader2.readAsBinaryString(file);
+  } else {
+    showToast('Formato no soportado. Usa .xlsx, .xls o .csv');
+  }
+}
+
+function obdMapChange(sel) {
+  var field  = sel.getAttribute('data-obdfield');
+  var val    = sel.value;
+  if (val) _obd.mapping[field] = val;
+  else delete _obd.mapping[field];
+  document.getElementById('obd-body').innerHTML = renderStep2();
+}
+
+function obdToPreview() {
+  var reqFields = OBD_FIELDS.filter(function(f) { return f.req; });
+  var allMapped = reqFields.every(function(f) { return _obd.mapping[f.key]; });
+  if (!allMapped) { showToast('Mapea los campos requeridos primero'); return; }
+  _obd.preview = applyMapping(_obd.raw.slice(0, 5), _obd.mapping);
+  _obd.step = 3;
+  document.getElementById('obd-body').innerHTML = renderStep3();
+}
+
+function obdDoImport() {
+  var allMapped = applyMapping(_obd.raw, _obd.mapping);
+  // Add to SHIPS array
+  allMapped.forEach(function(s) { SHIPS.push(s); });
+  _obd.step = 4;
+  document.getElementById('obd-body').innerHTML = renderStep4();
+  showToast(_obd.totalRows + ' envios importados correctamente');
+  updateNotifDot();
+}
+
+function obdBack() {
+  _obd.step = Math.max(1, _obd.step - 1);
+  if (_obd.step === 1) {
+    document.getElementById('obd-body').innerHTML = renderStep1();
+  } else if (_obd.step === 2) {
+    document.getElementById('obd-body').innerHTML = renderStep2();
+  }
+}
+
+function obdReset() {
+  _obd.step = 1; _obd.raw = []; _obd.headers = []; _obd.mapping = {};
+  _obd.preview = []; _obd.fileName = ''; _obd.totalRows = 0;
+  document.getElementById('obd-body').innerHTML = renderStep1();
+}
+
+function obdDownloadTemplate() {
+  if (typeof XLSX === 'undefined') { showToast('Libreria Excel cargando, intenta en 2s'); return; }
+  var template = [
+    { 'ID / Referencia':'NCM-2847', 'Origen':'Cartagena, CO', 'Destino':'Rotterdam, NL',
+      'Modo':'sea', 'Descripcion Carga':'Contenedores x24', 'Peso':'480 t',
+      'Costo USD':45200, 'ETA':'15 Jun 2025', 'Cliente':'TransLog SA', 'Estado':'transit' },
+    { 'ID / Referencia':'NCA-1193', 'Origen':'Bogota, CO', 'Destino':'Miami, FL',
+      'Modo':'air', 'Descripcion Carga':'Carga express 800kg', 'Peso':'800 kg',
+      'Costo USD':12800, 'ETA':'4 Jun 2025', 'Cliente':'AeroCargo PE', 'Estado':'ok' },
+    { 'ID / Referencia':'NCT-5521', 'Origen':'Medellin, CO', 'Destino':'Buenaventura, CO',
+      'Modo':'land', 'Descripcion Carga':'Carga general 20t', 'Peso':'20 t',
+      'Costo USD':3400, 'ETA':'6 Jun 2025', 'Cliente':'LogiAndes CO', 'Estado':'delay' },
+  ];
+  var ws = XLSX.utils.json_to_sheet(template);
+  // Set column widths
+  ws['!cols'] = Object.keys(template[0]).map(function() { return { wch:18 }; });
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Envios');
+  XLSX.writeFile(wb, 'navicore-plantilla-importacion.xlsx');
+  showToast('Plantilla descargada');
+}
+</script>
+
+<!-- CDN — non-blocking, loaded after DOM -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+</body>
+</html>
